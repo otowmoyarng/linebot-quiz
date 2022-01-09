@@ -1,0 +1,22 @@
+{
+  "name": "linebot-quiz",
+  "version": "1.0.0",
+  "description": "LINEDC企画用として作成したLINEBOT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otowmoyarng/linebot-quiz.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/otowmoyarng/linebot-quiz/issues"
+  },
+  "homepage": "https://github.com/otowmoyarng/linebot-quiz#readme",
+  "dependencies": {
+    "@google/clasp": "^2.4.1"
+  }
+}
