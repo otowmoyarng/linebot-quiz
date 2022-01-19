@@ -1,9 +1,33 @@
+const LineAPI_EntryPoint = {
+    Reply: 'https://api.line.me/v2/bot/message/reply',
+    MultiCast: 'https://api.line.me/v2/bot/message/multicast',
+    Profile: 'https://api.line.me/v2/bot/profile/',
+    RichMenu: 'https://api.line.me/v2/bot/richmenu',
+    UploadRichMenu: 'https://api-data.line.me/v2/bot/richmenu',
+    AttachRichMenu: 'https://api.line.me/v2/bot/user'
+};
+// const LINE_API_REPLY = 'https://api.line.me/v2/bot/message/reply';
+// const LINE_API_MULTICAST = 'https://api.line.me/v2/bot/message/multicast';
+// const LINE_API_PROFILE = 'https://api.line.me/v2/bot/profile/';
+// const LINE_API_RICHMENU = 'https://api.line.me/v2/bot/richmenu';
+// const LINE_API_UPLOAD_RICHMENU_IMG = 'https://api-data.line.me/v2/bot/richmenu';
+// const LINE_API_ATTACH_RICHMENU_USER = 'https://api.line.me/v2/bot/user';
 const LINEAPI_PushMessage_Broadcast = 'https://api.line.me/v2/bot/message/broadcast';
 const CHANNEL_ACCESS_TOKEN = Sheet.Config.getRange('Token').getValue();
 
 class LineApi {
     GetToken() {
         return Sheet.Config.getRange('Token').getValue();
+    }
+
+    getUserDisplayName(userId) {
+        const url = LineAPI_EntryPoint.Profile + userId;
+        const userProfile = UrlFetchApp.fetch(url, {
+            headers: {
+                Authorization: 'Bearer ' + CHANNEL_ACCESS_TOKEN,
+            },
+        });
+        return JSON.parse(userProfile).displayName;
     }
 
     /**
