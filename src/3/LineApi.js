@@ -15,13 +15,6 @@ const LineAPI_EntryPoint = {
 const LINEAPI_PushMessage_Broadcast = 'https://api.line.me/v2/bot/message/broadcast';
 const CHANNEL_ACCESS_TOKEN = Sheet.Config.getRange('Token').getValue();
 
-// FIXME:コンストラクタが使えないの
-// function LineApiConfig(replyToken) {
-//     // EventType: "",
-//     // UserId: "",
-//     // Text: "",
-//     this.ReplyToken = replyToken;
-// }
 class LineApi {
     GetToken() {
         return Sheet.Config.getRange('Token').getValue();

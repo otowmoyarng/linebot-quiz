@@ -20,10 +20,6 @@ class SheetAccessor {
         Sheet.User.deleteRow(userId);
     }
 
-    // setUserNickName(rowId, nickName) {
-    //     Sheet.User.getRange(rowId, UserClmIndex.NickName).setValue(nickName);
-    // }
-
     getAllUsers() {
         return Sheet.User.getDataRange().getValues();
     }

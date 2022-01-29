@@ -1,11 +1,5 @@
 class Quiz {
 
-    // FIXME:コンストラクタが使えないの
-    // Config;
-    // constructor(replyToken) {
-    //     this.Config = new LineApiConfig(replyToken);
-    // }
-
     Start(replyToken) {
         // ステータスを回答中とする
         sheetAccessor.setStatus(State.Answering);

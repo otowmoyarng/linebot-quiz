@@ -26,13 +26,7 @@ function TestQuizFlow() {
     sheetAccessor.setStatus(State.Finish);
     sheetAccessor.setQuizNo(0);
     let isStart = false;
-    // // Start
-    // quiz.Start();
-    // console.log(`Status:${sheetAccessor.getStatus()}`);
-    // console.log(`QuizNo:${sheetAccessor.getQuizNo()}`);
-    // console.log("currentQuiz:", quiz.find(1));
 
-    // // Question
     while (true) {
         const BeforeStatus = sheetAccessor.getStatus();
         const BeforeQuizNo = sheetAccessor.getQuizNo();

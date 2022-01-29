@@ -20,8 +20,6 @@ function doPost(request) {
             return unfollow(event.source.userId);
         }
 
-        // FIXME:コンストラクタが使えない
-        //const quiz = new Quiz(event.replyToken);
         let status = sheetAccessor.getStatus();
 
         // クイズ中
