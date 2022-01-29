@@ -45,10 +45,9 @@ class LineApi {
             })
         })
 
-        const replyText = {
-            replyToken: replyToken,
-            messages: messages
-        };
+        const replyText = Object.assign({}, ReplyMessages);
+        replyText.replyToken = replyToken;
+        replyText.messages = messages;
 
         const options = {
             method: 'post',
@@ -62,7 +61,15 @@ class LineApi {
     }
 
     /**
+     * 
+     */
+    replyConfirm() {
+
+    }
+
+    /**
      * LineBotへテキストメッセージを送信する
+     * @param   message 送信メッセージ
      */
     SendBroadcast(message) {
         const payload = {
