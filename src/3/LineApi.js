@@ -15,6 +15,13 @@ const LineAPI_EntryPoint = {
 const LINEAPI_PushMessage_Broadcast = 'https://api.line.me/v2/bot/message/broadcast';
 const CHANNEL_ACCESS_TOKEN = Sheet.Config.getRange('Token').getValue();
 
+// FIXME:コンストラクタが使えないの
+// function LineApiConfig(replyToken) {
+//     // EventType: "",
+//     // UserId: "",
+//     // Text: "",
+//     this.ReplyToken = replyToken;
+// }
 class LineApi {
     GetToken() {
         return Sheet.Config.getRange('Token').getValue();
@@ -28,6 +35,37 @@ class LineApi {
             },
         });
         return JSON.parse(userProfile).displayName;
+    }
+
+    /**
+     * 該当ユーザーに返信する
+     * 
+     * @param replyToken 
+     * @param replyMessages 
+     */
+    replyToUser(replyToken, replyMessages) {
+        const messages = [];
+        replyMessages.forEach((m) => {
+            messages.push({
+                type: 'text',
+                text: m
+            })
+        })
+
+        const replyText = {
+            replyToken: replyToken,
+            messages: messages
+        };
+
+        const options = {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + CHANNEL_ACCESS_TOKEN,
+            },
+            payload: JSON.stringify(replyText),
+        };
+        UrlFetchApp.fetch(LineAPI_EntryPoint.Reply, options);
     }
 
     /**

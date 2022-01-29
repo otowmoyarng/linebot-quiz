@@ -20,9 +20,33 @@ function doPost(request) {
             return unfollow(event.source.userId);
         }
 
-        if (event.message.text === Operation.Start) {
+        // FIXME:コンストラクタが使えない
+        //const quiz = new Quiz(event.replyToken);
+        let status = sheetAccessor.getStatus();
 
+        // クイズ中
+        if (status === State.Answering) {
+            // 
+
+            return quiz.Question(event.replyToken);
+        } else {
+            // 第１問を出す
+            if (event.message.text === Operation.Start) {
+                return quiz.Start(event.replyToken);
+            }
         }
+        // // TODO
+        // const replyMessages = [
+        //     `event.type:${event.type}`,
+        //     `userId:${event.source.userId}`,
+        //     `text:${event.message.text}`,
+        //     `replyToken:${event.replyToken}`,
+        // ];
+        // replyMessages.forEach((message) => {
+        //     Logger.WriteLog(message);
+        // });
+        // return LineApiDriver.replyToUser(event.replyToken, replyMessages);
+        // // TODO
     } catch (ex) {
         console.error("エラー発生", ex);
     }

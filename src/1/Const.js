@@ -1,3 +1,8 @@
+const State = {
+    Answering: '回答中',
+    Finish: '回答終了',
+};
+
 const Operation = {
     Questioner: '出題者',
     Start: '開始',
