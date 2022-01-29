@@ -9,18 +9,18 @@ class Quiz {
     }
 
     Question(replyToken) {
-        const quiz = this.current();
+        const quizitem = this.current();
 
         let replyMessage = null;
         // 最終問題
-        if (quiz === null) {
+        if (quizitem === null) {
             // ステータスを回答終了とする
             sheetAccessor.setStatus(State.Finish);
             // 結果発表
             replyMessage = `結果発表`;
         } else {
             // 問題を出す
-            replyMessage = `第:${quiz.quizNo}門`;
+            replyMessage = `第:${quizitem.QuizNo}門`;
             // 問題数をカウントアップする
             sheetAccessor.countUpQuizNo();
         }
