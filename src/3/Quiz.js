@@ -24,7 +24,7 @@ class Quiz {
             // 問題数をカウントアップする
             sheetAccessor.countUpQuizNo();
         }
-        return replyToken ? LineApiDriver.replyToUser(/*this.Config.ReplyToken*/replyToken, [replyMessage]) : "replyTokenなし";
+        return replyToken ? LineApiDriver.replyText(/*this.Config.ReplyToken*/replyToken, [replyMessage]) : "replyTokenなし";
     }
 
     getAll() {

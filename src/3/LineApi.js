@@ -31,12 +31,12 @@ class LineApi {
     }
 
     /**
-     * 該当ユーザーに返信する
+     * テキストメッセージを返信する
      * 
-     * @param replyToken 
-     * @param replyMessages 
+     * @param replyToken リプライトークン
+     * @param replyMessages 返信するメッセージ配列
      */
-    replyToUser(replyToken, replyMessages) {
+    replyText(replyToken, replyMessages) {
         const messages = [];
         replyMessages.forEach((m) => {
             messages.push({

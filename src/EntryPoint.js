@@ -48,7 +48,7 @@ function routing(event) {
         replyMessages.forEach((message) => {
             Logger.WriteLog(message);
         });
-        return LineApiDriver.replyToUser(event.replyToken, replyMessages);
+        return LineApiDriver.replyText(event.replyToken, replyMessages);
         // TODO
     }
 }
