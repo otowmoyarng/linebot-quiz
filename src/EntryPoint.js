@@ -33,7 +33,10 @@ function routing(event) {
 
     // クイズ中
     if (status === State.Answering) {
+        // 回答を記入する
+        quiz.Answer(event.message.text);
         return quiz.Question(event.replyToken);
+
         // 第１問を出す
     } else if (event.message.text === Operation.Start) {
         return quiz.Start(event.replyToken);

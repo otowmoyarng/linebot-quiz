@@ -1,5 +1,9 @@
 class Quiz {
 
+    /**
+     * クイズを始める
+     * @package replyToken リプライトークン
+     */
     Start(replyToken) {
         // ステータスを回答中とする
         sheetAccessor.setStatus(State.Answering);
@@ -8,11 +12,15 @@ class Quiz {
         return this.Question(replyToken);
     }
 
+    /**
+     * 出題する
+     * @package replyToken リプライトークン
+     */
     Question(replyToken) {
-        const quizitem = this.current();
-
+        // 問題数をカウントアップする
+        sheetAccessor.countUpQuizNo();
         let replyMessage = null;
-        // 最終問題
+        const quizitem = this.current();
         if (quizitem === null) {
             // ステータスを回答終了とする
             sheetAccessor.setStatus(State.Finish);
@@ -21,10 +29,16 @@ class Quiz {
         } else {
             // 問題を出す
             replyMessage = `第:${quizitem.QuizNo}門`;
-            // 問題数をカウントアップする
-            sheetAccessor.countUpQuizNo();
         }
         return replyToken ? LineApiDriver.replyText(/*this.Config.ReplyToken*/replyToken, [replyMessage]) : "replyTokenなし";
+    }
+
+    /**
+     * 回答をスプレッドシートに記入する
+     * @package text 送信テキスト
+     */
+    Answer(text) {
+        sheetAccessor.setAnswer(this.current().Question, text);
     }
 
     getAll() {
@@ -36,6 +50,9 @@ class Quiz {
                 Imgsrc: row[2],
                 Question: row[3],
                 Choices: row[4],
+                Correct: row[5],
+                Judge: row[6],
+                Answer: row[7],
                 rowId: index + 1
             };
         });

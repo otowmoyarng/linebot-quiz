@@ -8,7 +8,7 @@ const Sheet = {
 };
 
 // クイズのセルの範囲を指定する
-const QuizRange = "A7:H10";
+const QuizRange = "A16:H19";
 
 class SheetAccessor {
 
@@ -36,7 +36,7 @@ class SheetAccessor {
         return Sheet.Quiz.getRange('QuizNo').getValue();
     }
 
-    setQuizNo(quizNo = 1) {
+    setQuizNo(quizNo = 0) {
         Sheet.Quiz.getRange('QuizNo').setValue(quizNo);
     }
 
@@ -47,6 +47,14 @@ class SheetAccessor {
 
     getAllQuizzes() {
         return Sheet.Quiz.getRange(QuizRange).getValues();
+    }
+
+    setAnswer(question, answer) {
+        const result = Sheet.Quiz.createTextFinder(question).findAll();
+        result.forEach(row => {
+            var updcell = row.getA1Notation().replace("D", "H");
+            Sheet.Quiz.getRange(`${updcell}`).setValue(answer);
+        });
     }
 }
 
