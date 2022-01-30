@@ -1,25 +1,24 @@
 const LineAPI_EntryPoint = {
+    Broadcast: 'https://api.line.me/v2/bot/message/broadcast',
     Reply: 'https://api.line.me/v2/bot/message/reply',
+    Push: 'https://api.line.me/v2/bot/message/push',
     MultiCast: 'https://api.line.me/v2/bot/message/multicast',
     Profile: 'https://api.line.me/v2/bot/profile/',
     RichMenu: 'https://api.line.me/v2/bot/richmenu',
     UploadRichMenu: 'https://api-data.line.me/v2/bot/richmenu',
     AttachRichMenu: 'https://api.line.me/v2/bot/user'
 };
-// const LINE_API_REPLY = 'https://api.line.me/v2/bot/message/reply';
-// const LINE_API_MULTICAST = 'https://api.line.me/v2/bot/message/multicast';
-// const LINE_API_PROFILE = 'https://api.line.me/v2/bot/profile/';
-// const LINE_API_RICHMENU = 'https://api.line.me/v2/bot/richmenu';
-// const LINE_API_UPLOAD_RICHMENU_IMG = 'https://api-data.line.me/v2/bot/richmenu';
-// const LINE_API_ATTACH_RICHMENU_USER = 'https://api.line.me/v2/bot/user';
-const LINEAPI_PushMessage_Broadcast = 'https://api.line.me/v2/bot/message/broadcast';
 const CHANNEL_ACCESS_TOKEN = Sheet.Config.getRange('Token').getValue();
+const OptionBase = {
+    method: 'post',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + CHANNEL_ACCESS_TOKEN,
+    },
+    payload: ''
+};
 
 class LineApi {
-    GetToken() {
-        return Sheet.Config.getRange('Token').getValue();
-    }
-
     getUserDisplayName(userId) {
         const url = LineAPI_EntryPoint.Profile + userId;
         const userProfile = UrlFetchApp.fetch(url, {
@@ -31,12 +30,12 @@ class LineApi {
     }
 
     /**
-     * テキストメッセージを返信する
+     * テキストメッセージをリプライ送信する
      * 
      * @param replyToken リプライトークン
      * @param replyMessages 返信するメッセージ配列
      */
-    replyText(replyToken, replyMessages) {
+    ReplyTextMessage(replyToken, replyMessages) {
         const messages = [];
         replyMessages.forEach((m) => {
             messages.push({
@@ -45,47 +44,200 @@ class LineApi {
             })
         })
 
-        const replyText = Object.assign({}, ReplyMessages);
-        replyText.replyToken = replyToken;
-        replyText.messages = messages;
-
-        const options = {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + CHANNEL_ACCESS_TOKEN,
-            },
-            payload: JSON.stringify(replyText),
-        };
+        let options = Object.assign({}, OptionBase);
+        options.payload = JSON.stringify({
+            replyToken: replyToken,
+            messages: messages
+        });
         UrlFetchApp.fetch(LineAPI_EntryPoint.Reply, options);
     }
 
     /**
+     * 確認テンプレートメッセージをリプライ送信する
      * 
+     * @param replyToken リプライトークン
+     * @param question 質問内容
+     * @param choices 選択肢
      */
-    replyConfirm() {
+    ReplyConfirmMessage(replyToken, question, choices) {
+        const actions = [];
+        choices.split(',').forEach(choice => {
+            actions.push({
+                type: 'message',
+                label: choice,
+                text: choice
+            });
+        });
 
+        let options = Object.assign({}, OptionBase);
+        options.payload = JSON.stringify({
+            replyToken: replyToken,
+            messages: [{
+                type: 'template',   // template固定
+                altText: 'altText', // 代替テキスト
+                template: {
+                    type: 'confirm',    // button固定
+                    text: question,     // メッセージテキスト
+                    actions: actions    // タップされたときのアクション
+                }
+            }]
+        });
+        UrlFetchApp.fetch(LineAPI_EntryPoint.Reply, options);
     }
 
     /**
-     * LineBotへテキストメッセージを送信する
+     * ボタン型テンプレートメッセージをリプライ送信する
+     * 
+     * @param replyToken リプライトークン
+     * @param title title
+     * @param imgSrc 画像URL
+     * @param question 質問内容
+     * @param choices 選択肢
+     */
+    ReplyButtonMessage(replyToken, title, imgSrc, question, choices) {
+        const actions = [];
+        choices.split(',').forEach(choice => {
+            actions.push({
+                type: 'message',
+                label: choice,
+                text: choice
+            });
+        });
+
+        let template = {
+            type: 'template',   // template固定
+            altText: 'altText', // 代替テキスト
+            template: {
+                type: 'buttons',                // button固定
+                imageAspectRatio: 'rectangle',  // 画像のアスペクト rectangle/square
+                imageSize: 'contain',           // 画像の表示形式 cover/contain
+                title: title,                   // タイトル
+                text: question,                 // メッセージテキスト
+                actions: actions                // タップされたときのアクション
+            }
+        };
+        if (!IsNullOrEmpty(imgSrc)) {
+            template.template['thumbnailImageUrl'] = imgSrc;
+        }
+        let options = Object.assign({}, OptionBase);
+        options.payload = JSON.stringify({
+            replyToken: replyToken,
+            messages: [template]
+        });
+        UrlFetchApp.fetch(LineAPI_EntryPoint.Reply, options);
+    }
+
+    /**
+     * ブロードキャストメッセージを送る
      * @param   message 送信メッセージ
      */
-    SendBroadcast(message) {
+    BroadcastMessage(message) {
         const payload = {
             messages: [
                 { type: 'text', text: message }
             ]
         };
 
-        const options = {
-            contentType: 'application/json',
-            headers: {
-                Authorization: 'Bearer ' + CHANNEL_ACCESS_TOKEN
-            },
-            payload: JSON.stringify(payload)
+        let options = Object.assign({}, OptionBase);
+        options.payload = JSON.stringify(payload);
+        UrlFetchApp.fetch(LineAPI_EntryPoint.Broadcast, options);
+    }
+
+    /**
+     * プッシュメッセージを送る
+     * @param userId ユーザーID
+     * @param pushmessage メッセージオブジェクト
+     */
+    PushTextMessage(userId, pushmessage) {
+        const messages = [];
+        pushmessage.forEach((m) => {
+            messages.push({
+                type: 'text',
+                text: m
+            })
+        })
+
+        let options = Object.assign({}, OptionBase);
+        options.payload = JSON.stringify({
+            to: userId,
+            messages: messages
+        });
+        UrlFetchApp.fetch(LineAPI_EntryPoint.Push, options);
+    }
+
+    /**
+     * 確認テンプレートメッセージをプッシュ送信する
+     * 
+     * @param userId ユーザーID
+     * @param question 質問内容
+     * @param choices 選択肢
+     */
+    PushConfirmMessage(userId, question, choices) {
+        const actions = [];
+        choices.split(',').forEach(choice => {
+            actions.push({
+                type: 'message',
+                label: choice,
+                text: choice
+            });
+        });
+
+        let options = Object.assign({}, OptionBase);
+        options.payload = JSON.stringify({
+            to: userId,
+            messages: [{
+                type: 'template',   // template固定
+                altText: 'altText', // 代替テキスト
+                template: {
+                    type: 'confirm',    // button固定
+                    text: question,     // メッセージテキスト
+                    actions: actions    // タップされたときのアクション
+                }
+            }]
+        });
+        UrlFetchApp.fetch(LineAPI_EntryPoint.Push, options);
+    }
+
+    /**
+     * ボタンテンプレートメッセージをプッシュ送信する
+     * 
+     * @param userId ユーザーID
+     * @param title title
+     * @param imgSrc 画像URL
+     * @param question 質問内容
+     * @param choices 選択肢
+     */
+    PushBottunMessage(userId, title, imgSrc, question, choices) {
+        const actions = [];
+        choices.split(',').forEach(choice => {
+            actions.push({
+                type: 'message',
+                label: choice,
+                text: choice
+            });
+        });
+
+        let template = {
+            type: 'template',   // template固定
+            altText: 'altText', // 代替テキスト
+            template: {
+                type: 'buttons',                // button固定
+                imageAspectRatio: 'rectangle',  // 画像のアスペクト rectangle/square
+                imageSize: 'contain',           // 画像の表示形式 cover/contain
+                title: title,                   // タイトル
+                text: question,                 // メッセージテキスト
+                actions: actions                // タップされたときのアクション
+            }
         };
-        UrlFetchApp.fetch(LINEAPI_PushMessage_Broadcast, options);
+        if (!IsNullOrEmpty(imgSrc)) {
+            template.template['thumbnailImageUrl'] = imgSrc;
+        }
+        let options = Object.assign({}, OptionBase);
+        options.payload = JSON.stringify({
+            to: userId,
+            messages: [template]
+        });
+        UrlFetchApp.fetch(LineAPI_EntryPoint.Push, options);
     }
 }
 

@@ -7,9 +7,6 @@ const Sheet = {
     User: SpreadSheet.getSheetByName('user')
 };
 
-// クイズのセルの範囲を指定する
-const QuizRange = "A16:H19";
-
 class SheetAccessor {
 
     addUser(userId, userName, currentTime, nickName) {

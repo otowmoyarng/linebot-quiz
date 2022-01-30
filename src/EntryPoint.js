@@ -17,41 +17,30 @@ function doPost(request) {
 }
 
 function routing(event) {
-    Logger.WriteLog(`event.type:${event.type}, userId:${event.source.userId}, test:${event.message.text}, replyToken:${event.replyToken}`);
+    //Logger.WriteLog(`event.type:${event.type}, userId:${event.source.userId}, test:${event.message.text}, replyToken:${event.replyToken}`);
 
-    // アクセスユーザーを登録
-    if (event.type == 'follow') {
-        return follow(event.source.userId);
-    }
+    // // アクセスユーザーを登録
+    // if (event.type == 'follow') {
+    //     return follow(event.source.userId);
+    // }
 
-    // ブロックされたとき、該当ユーザーを削除
-    if (event.type == 'unfollow') {
-        return unfollow(event.source.userId);
-    }
+    // // ブロックされたとき、該当ユーザーを削除
+    // if (event.type == 'unfollow') {
+    //     return unfollow(event.source.userId);
+    // }
 
-    let status = sheetAccessor.getStatus();
-
-    // クイズ中
-    if (status === State.Answering) {
-        // 回答を記入する
+    if (sheetAccessor.getStatus() === State.Answering) {
+        // クイズ中
+        // 回答を記入するし、次の問題を出す
         quiz.Answer(event.message.text);
         return quiz.Question(event.replyToken);
-
-        // 第１問を出す
-    } else if (event.message.text === Operation.Start) {
+    } else if (event.message.text === Operation.Start || event.message.text === Operation.Again) {
+        // クイズ開始
         return quiz.Start(event.replyToken);
+    } else if (event.message.text === Operation.Scoring) {
+        // クイズ開始
+        return quiz.Expose(event.replyToken);
     } else {
-        // TODO
-        const replyMessages = [
-            `event.type:${event.type}`,
-            `userId:${event.source.userId}`,
-            `text:${event.message.text}`,
-            `replyToken:${event.replyToken}`,
-        ];
-        replyMessages.forEach((message) => {
-            Logger.WriteLog(message);
-        });
-        return LineApiDriver.replyText(event.replyToken, replyMessages);
-        // TODO
+        return LineApiDriver.ReplyTextMessage(event.replyToken, ['この操作は対応しておりません。']);
     }
 }
