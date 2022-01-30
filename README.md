@@ -44,3 +44,90 @@ src階層内のソースはデプロイ後に入れ替えが必要となる。
 1. User.gs
 1. Logs.gs
 1. Dispatcher.gs
+
+---
+
+## MessagingAPIについて
+
+[公式ドキュメント](https://developers.line.biz/ja/docs/messaging-api/)はこちら
+
+<details>
+<summary>応答メッセージ</summary>
+
+```json
+{
+    "replyToken": "Webhookイベントに含まれている応答トークン",
+    "messages": [
+        {
+            "type": "text",
+            "text": "送信メッセージ"
+        }
+    ]
+}
+```
+</details>
+
+<details>
+<summary>プッシュメッセージ</summary>
+
+```json
+{
+    "to": "ユーザー、グループ、トークルームのID",
+    "messages": [
+        {
+            "type": "text",
+            "text": "送信メッセージ"
+        }
+    ]
+}
+```
+</details>
+
+<details>
+<summary>ボタンテンプレート</summary>
+
+```json
+{
+    "type": 'template',
+    "altText": 'altText',
+    "template": {
+        "type": 'buttons',
+        "thumbnailImageUrl": '画像URL',
+        "imageAspectRatio": '画像のアスペクト rectangle/square',
+        "imageSize": '画像の表示形式   cover/contain',
+        "imageBackgroundColor": '画像の背景色 HTTPカラーコード',
+        "title": 'タイトル',
+        "text": ' メッセージテキスト',
+        "actions": []
+    }
+}
+```
+</details>
+
+<details>
+<summary>確認テンプレート</summary>
+
+```json
+{
+    "type": 'template',
+    "altText": 'altText',
+    "template": {
+        "type": 'confirm',
+        "text": ' メッセージテキスト',
+        "actions": []
+    }
+}
+```
+</details>
+
+<details>
+<summary>メッセージアクション</summary>
+
+```json
+{
+    "type": 'message',
+    "label": 'アクションのラベル',
+    "text": 'アクションの実行時に送信されるテキスト',
+}
+```
+</details>

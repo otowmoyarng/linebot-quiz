@@ -22,10 +22,19 @@ function TestQuiz_Find() {
     console.log("findQuiz:", quiz.find(2));
 }
 
+function TestAnswer() {
+    console.log("beforeQuiz:", quiz.find(1));
+    quiz.Start();
+    quiz.Answer('✕');
+    console.log("AfterQuiz:", quiz.find(1));
+}
+
 function TestQuizFlow() {
     sheetAccessor.setStatus(State.Finish);
     sheetAccessor.setQuizNo(0);
     let isStart = false;
+    let anserindex = 0;
+    const answerlist = ['〇', 'Row', 'ウスヒラタケ', '札幌'];
 
     while (true) {
         const BeforeStatus = sheetAccessor.getStatus();
@@ -37,8 +46,9 @@ function TestQuizFlow() {
 
             isStart = true;
         } else {
-            console.log("currentQuiz:", quiz.current());
+            quiz.Answer(answerlist[anserindex++]);
             quiz.Question();
+            console.log("currentQuiz:", quiz.current());
         }
 
         console.log(`Status:${BeforeStatus} -> ${sheetAccessor.getStatus()}`);
