@@ -1,6 +1,12 @@
 const State = {
+    Waiting: '待機中',
     Answering: '回答中',
     Finish: '回答終了',
+};
+
+const DelFlg = {
+    NotDelete: '',
+    Deleted: '削除済',
 };
 
 const Operation = {
@@ -42,4 +48,12 @@ function IsNullOrEmpty(strings) {
         return true;
     }
     return false;
+}
+
+function getUserId() {
+    const value = PropertiesService.getScriptProperties().getProperty(GASPropertiesKey.UserId);
+    if (value === null) {
+        console.error(`key[${key}]がプロパティに存在しません。`);
+    }
+    return value;
 }

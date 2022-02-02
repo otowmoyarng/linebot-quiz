@@ -6,14 +6,6 @@ function TestSheet_Config() {
     });
 }
 
-function TestAddUser() {
-    sheetAccessor.addUser("userId", "userName", "2022/01/11 12:34:56", "nickName");
-}
-
-function TestRemoveUser() {
-    sheetAccessor.removeUser("userId");
-}
-
 function TestGetAllUsers() {
     console.log("getAllUsers:", sheetAccessor.getAllUsers());
 }

@@ -9,12 +9,16 @@ const Sheet = {
 
 class SheetAccessor {
 
-    addUser(userId, userName, currentTime, nickName) {
-        Sheet.User.appendRow([userId, userName, currentTime, nickName]);
+    addUser(userId) {
+        const insertRow = [userId, State.Waiting, DelFlg.NotDelete].concat(Array.from({ length: this.getAllQuizzes().length }, () => ''));
+        Sheet.User.appendRow(insertRow);
     }
 
     removeUser(userId) {
-        Sheet.User.deleteRow(userId);
+        const result = Sheet.User.createTextFinder(userId).findAll();
+        result.forEach(row => {
+            Sheet.User.getRange(row.getRow(), 3).setValue(DelFlg.Deleted);
+        });
     }
 
     getAllUsers() {

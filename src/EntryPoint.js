@@ -19,15 +19,15 @@ function doPost(request) {
 function routing(event) {
     //Logger.WriteLog(`event.type:${event.type}, userId:${event.source.userId}, test:${event.message.text}, replyToken:${event.replyToken}`);
 
-    // // アクセスユーザーを登録
-    // if (event.type == 'follow') {
-    //     return follow(event.source.userId);
-    // }
+    // アクセスユーザーを登録
+    if (event.type == 'follow') {
+        return follow(event.source.userId);
+    }
 
-    // // ブロックされたとき、該当ユーザーを削除
-    // if (event.type == 'unfollow') {
-    //     return unfollow(event.source.userId);
-    // }
+    // ブロックされたとき、該当ユーザーを削除
+    if (event.type == 'unfollow') {
+        return unfollow(event.source.userId);
+    }
 
     if (sheetAccessor.getStatus() === State.Answering) {
         // クイズ中

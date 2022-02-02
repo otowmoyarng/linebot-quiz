@@ -22,7 +22,6 @@ class Quiz {
 
         const quizItem = this.current();
 
-        let replyMessage = null;
         if (quizItem === null) {
             // ステータスを回答終了とする
             sheetAccessor.setStatus(State.Finish);
