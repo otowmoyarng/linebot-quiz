@@ -43,8 +43,10 @@ class SheetAccessor {
     }
 
     removeUser(userId) {
-        Sheet.User.deleteRow(userId);
-        //this.UpdateUser(userId, 3, DelFlg.Deleted);
+        const result = Sheet.User.createTextFinder(userId).findAll();
+        result.forEach(row => {
+            Sheet.User.deleteRow(row.getRow());
+        });
     }
 
     getAllUsers() {
