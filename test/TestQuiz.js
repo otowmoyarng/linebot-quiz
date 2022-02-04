@@ -3,19 +3,19 @@ function TestQuiz_GetAll() {
 }
 
 function TestQuiz_Current() {
-    const beforeQuizNo = sheetAccessor.getQuizNo(getUserId());
+    const beforeQuizNo = sheetAccessor.getQuizNo(getTestUserId());
 
     // デフォルト値
-    sheetAccessor.setQuizNo(getUserId(), 1);
-    console.log(`QuizNo:${sheetAccessor.getQuizNo(getUserId())}`);
-    console.log("currentQuiz:", quiz.current());
+    sheetAccessor.setQuizNo(getTestUserId(), 1);
+    console.log(`QuizNo:${sheetAccessor.getQuizNo(getTestUserId())}`);
+    console.log("currentQuiz:", quiz.current(getTestUserId()));
 
     // 値指定
-    sheetAccessor.setQuizNo(getUserId(), 3);
-    console.log(`QuizNo:${sheetAccessor.getQuizNo(getUserId())}`);
-    console.log("currentQuiz:", quiz.current());
+    sheetAccessor.setQuizNo(getTestUserId(), 3);
+    console.log(`QuizNo:${sheetAccessor.getQuizNo(getTestUserId())}`);
+    console.log("currentQuiz:", quiz.current(getTestUserId()));
 
-    sheetAccessor.setQuizNo(getUserId(), beforeQuizNo);
+    sheetAccessor.setQuizNo(getTestUserId(), beforeQuizNo);
 }
 
 function TestQuiz_Find() {
@@ -30,15 +30,15 @@ function TestAnswer() {
 }
 
 function TestQuizFlow() {
-    sheetAccessor.setStatus(getUserId(), State.Finish);
-    sheetAccessor.setQuizNo(getUserId(), 0);
+    sheetAccessor.setStatus(getTestUserId(), State.Finish);
+    sheetAccessor.setQuizNo(getTestUserId(), 0);
     let isStart = false;
     let anserindex = 0;
     const answerlist = ['〇', 'Row', 'ウスヒラタケ', '札幌'];
 
     while (true) {
-        const BeforeStatus = sheetAccessor.getStatus(getUserId());
-        const BeforeQuizNo = sheetAccessor.getQuizNo(getUserId());
+        const BeforeStatus = sheetAccessor.getStatus(getTestUserId());
+        const BeforeQuizNo = sheetAccessor.getQuizNo(getTestUserId());
 
         if (!isStart) {
             quiz.Start();
@@ -51,11 +51,11 @@ function TestQuizFlow() {
             console.log("currentQuiz:", quiz.current());
         }
 
-        console.log(`Status:${BeforeStatus} -> ${sheetAccessor.getStatus(getUserId())}`);
-        console.log(`QuizNo:${BeforeQuizNo} -> ${sheetAccessor.getQuizNo(getUserId())}`);
+        console.log(`Status:${BeforeStatus} -> ${sheetAccessor.getStatus(getTestUserId())}`);
+        console.log(`QuizNo:${BeforeQuizNo} -> ${sheetAccessor.getQuizNo(getTestUserId())}`);
 
         const quizitem = quiz.current();
-        if (quizitem === null && sheetAccessor.getStatus(getUserId()) === State.Finish)
+        if (quizitem === null && sheetAccessor.getStatus(getTestUserId()) === State.Finish)
             break;
     }
 }

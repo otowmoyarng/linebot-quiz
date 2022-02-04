@@ -50,7 +50,7 @@ function IsNullOrEmpty(strings) {
     return false;
 }
 
-function getUserId() {
+function getTestUserId() {
     const value = PropertiesService.getScriptProperties().getProperty(GASPropertiesKey.UserId);
     if (value === null) {
         console.error(`key[${key}]がプロパティに存在しません。`);

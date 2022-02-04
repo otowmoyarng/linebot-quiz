@@ -1,13 +1,13 @@
 function TestUsers_add() {
-    user.add(getUserId());
+    user.add(getTestUserId());
     console.log("getAllUsers:", sheetAccessor.getAllUsers());
-    user.add(getUserId());
+    user.add(getTestUserId());
     console.log("getAllUsers:", sheetAccessor.getAllUsers());
 }
 
 function TestUsers_remove() {
-    user.add(getUserId());
-    user.remove(getUserId());
+    user.add(getTestUserId());
+    user.remove(getTestUserId());
     console.log("getAllUsers:", sheetAccessor.getAllUsers());
 }
 
@@ -16,6 +16,6 @@ function TestUsers_remove() {
 // }
 
 function TestUsers_find() {
-    console.log("hit:", user.find(getUserId()));
+    console.log("hit:", user.find(getTestUserId()));
     console.log("not hit:", user.find("hoge"));
 }

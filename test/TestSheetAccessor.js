@@ -11,26 +11,26 @@ function TestGetAllUsers() {
 }
 
 function TestGetStatus() {
-    console.log("getStatus:", sheetAccessor.getStatus(getUserId()));
+    console.log("getStatus:", sheetAccessor.getStatus(getTestUserId()));
 }
 
 function TestSetStatus() {
     const statusList = [State.Answering, State.Finish, State.Waiting];
     statusList.forEach(status => {
-        sheetAccessor.setStatus(getUserId(), status);
-        console.log("setStatus:", sheetAccessor.getStatus(getUserId()));
+        sheetAccessor.setStatus(getTestUserId(), status);
+        console.log("setStatus:", sheetAccessor.getStatus(getTestUserId()));
     });
 }
 
 function TestSetCountUpQuizNo() {
-    const beforeQuizNo = sheetAccessor.getQuizNo(getUserId());
-    sheetAccessor.setQuizNo(getUserId());
-    let quizNo = sheetAccessor.getQuizNo(getUserId());
+    const beforeQuizNo = sheetAccessor.getQuizNo(getTestUserId());
+    sheetAccessor.setQuizNo(getTestUserId());
+    let quizNo = sheetAccessor.getQuizNo(getTestUserId());
     console.log(`QuizNo:${quizNo}`);
-    while (quizNo <= 10) {
-        sheetAccessor.countUpQuizNo(getUserId());
-        quizNo = sheetAccessor.getQuizNo(getUserId());
+    while (quizNo < 10) {
+        sheetAccessor.countUpQuizNo(getTestUserId());
+        quizNo = sheetAccessor.getQuizNo(getTestUserId());
         console.log(`QuizNo:${quizNo}`);
     }
-    sheetAccessor.setQuizNo(getUserId(), beforeQuizNo);
+    sheetAccessor.setQuizNo(getTestUserId(), beforeQuizNo);
 }

@@ -5,7 +5,7 @@ function TestBroadcastMessage() {
 
 function TestPushMessage() {
     console.log("テキストメッセージ：プッシュ送信開始");
-    LineApiDriver.PushTextMessage(getUserId(), ["pushメッセージ送信", "abcde"]);
+    LineApiDriver.PushTextMessage(getTestUserId(), ["pushメッセージ送信", "abcde"]);
     console.log("テキストメッセージ：プッシュ送信完了");
 }
 
@@ -15,7 +15,7 @@ function TestPushConfirmMessage() {
     quizes.forEach(quizItem => {
         if (quizItem.QuizType === QuestionType.Confirm) {
             console.log("Quiz:", quizItem);
-            LineApiDriver.PushConfirmMessage(getUserId(), quizItem.Question, quizItem.Choices);
+            LineApiDriver.PushConfirmMessage(getTestUserId(), quizItem.Question, quizItem.Choices);
         }
     });
     console.log("確認テンプレートメッセージ：プッシュ送信終了");
