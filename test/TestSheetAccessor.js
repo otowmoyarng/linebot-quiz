@@ -11,23 +11,26 @@ function TestGetAllUsers() {
 }
 
 function TestGetStatus() {
-    console.log("getStatus:", sheetAccessor.getStatus());
+    console.log("getStatus:", sheetAccessor.getStatus(getUserId()));
 }
 
 function TestSetStatus() {
-    sheetAccessor.setStatus("test");
-    console.log("setStatus:", sheetAccessor.getStatus());
+    const statusList = [State.Answering, State.Finish, State.Waiting];
+    statusList.forEach(status => {
+        sheetAccessor.setStatus(getUserId(), status);
+        console.log("setStatus:", sheetAccessor.getStatus(getUserId()));
+    });
 }
 
 function TestSetCountUpQuizNo() {
-    const beforeQuizNo = sheetAccessor.getQuizNo();
-    sheetAccessor.setQuizNo();
-    let quizNo = sheetAccessor.getQuizNo();
+    const beforeQuizNo = sheetAccessor.getQuizNo(getUserId());
+    sheetAccessor.setQuizNo(getUserId());
+    let quizNo = sheetAccessor.getQuizNo(getUserId());
     console.log(`QuizNo:${quizNo}`);
     while (quizNo <= 10) {
-        sheetAccessor.countUpQuizNo();
-        quizNo = sheetAccessor.getQuizNo();
+        sheetAccessor.countUpQuizNo(getUserId());
+        quizNo = sheetAccessor.getQuizNo(getUserId());
         console.log(`QuizNo:${quizNo}`);
     }
-    sheetAccessor.setQuizNo(beforeQuizNo);
+    sheetAccessor.setQuizNo(getUserId(), beforeQuizNo);
 }

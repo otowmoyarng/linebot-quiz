@@ -29,17 +29,17 @@ function routing(event) {
         return unfollow(event.source.userId);
     }
 
-    if (sheetAccessor.getStatus() === State.Answering) {
+    if (sheetAccessor.getStatus(event.source.userId) === State.Answering) {
         // クイズ中
-        // 回答を記入するし、次の問題を出す
-        quiz.Answer(event.message.text);
-        return quiz.Question(event.replyToken);
+        // 回答を記入して次の問題を出す
+        quiz.Answer(event.message.text, event.source.userId);
+        return quiz.Question(event.replyToken, event.source.userId);
     } else if (event.message.text === Operation.Start || event.message.text === Operation.Again) {
         // クイズ開始
-        return quiz.Start(event.replyToken);
+        return quiz.Start(event.replyToken, event.source.userId);
     } else if (event.message.text === Operation.Scoring) {
-        // クイズ開始
-        return quiz.Expose(event.replyToken);
+        // 答え合わせ
+        return quiz.Expose(event.replyToken, event.source.userId);
     } else {
         return LineApiDriver.ReplyTextMessage(event.replyToken, ['この操作は対応しておりません。']);
     }

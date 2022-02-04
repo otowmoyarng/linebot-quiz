@@ -3,30 +3,32 @@ class Quiz {
     /**
      * クイズを始める
      * @param replyToken リプライトークン
+     * @param userId ユーザーID
      */
-    Start(replyToken) {
+    Start(replyToken, userId) {
         // ステータスを回答中とする
-        sheetAccessor.setStatus(State.Answering);
+        sheetAccessor.setStatus(userId, State.Answering);
         // 問題数を初期化する
-        sheetAccessor.setQuizNo();
-        return this.Question(replyToken);
+        sheetAccessor.setQuizNo(userId);
+        return this.Question(replyToken, userId);
     }
 
     /**
      * 出題する
      * @param replyToken リプライトークン
+     * @param userId ユーザーID
      */
-    Question(replyToken) {
+    Question(replyToken, userId) {
         // 問題数をカウントアップする
-        sheetAccessor.countUpQuizNo();
+        sheetAccessor.countUpQuizNo(userId);
 
-        const quizItem = this.current();
+        const quizItem = this.current(userId);
 
         if (quizItem === null) {
             // ステータスを回答終了とする
-            sheetAccessor.setStatus(State.Finish);
+            sheetAccessor.setStatus(userId, State.Finish);
             // 結果発表
-            return LineApiDriver.ReplyButtonMessage(replyToken, '結果発表', null, this.Score(), `${Operation.Again},${Operation.Scoring}`);
+            return LineApiDriver.ReplyButtonMessage(replyToken, '結果発表', null, this.Score(userId), `${Operation.Again},${Operation.Scoring}`);
         } else {
             switch (quizItem.QuizType) {
                 case QuestionType.Button:
@@ -42,15 +44,18 @@ class Quiz {
     /**
      * 回答をスプレッドシートに記入する
      * @param text 送信テキスト
+     * @param userId ユーザーID
      */
-    Answer(text) {
-        sheetAccessor.setAnswer(this.current().Question, text);
+    Answer(text, userId) {
+        //sheetAccessor.setAnswer(this.current().Question, text);
+        sheetAccessor.setAnswer(userId, text);
     }
 
     /**
      * 採点する
+     * @param userId ユーザーID
      */
-    Score() {
+    Score(userId) {
         const quizes = quiz.getAll();
         const questionCount = quizes.length;
         const correctCount = quizes.filter(quizItem => quizItem.Judge === 'OK').length;
@@ -60,8 +65,9 @@ class Quiz {
     /**
      * 公開する
      * @param replyToken リプライトークン
+     * @param userId ユーザーID
      */
-    Expose(replyToken) {
+    Expose(replyToken, userId) {
         const quizes = quiz.getAll();
         let messages = [];
         quizes.forEach(quizItem => {
@@ -107,8 +113,8 @@ class Quiz {
         return index != -1 ? quizzes[index] : null;
     }
 
-    current() {
-        return this.find(sheetAccessor.getQuizNo());
+    current(userId) {
+        return this.find(sheetAccessor.getQuizNo(userId));
     }
 }
 

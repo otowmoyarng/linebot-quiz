@@ -3,19 +3,19 @@ function TestQuiz_GetAll() {
 }
 
 function TestQuiz_Current() {
-    const beforeQuizNo = sheetAccessor.getQuizNo();
+    const beforeQuizNo = sheetAccessor.getQuizNo(getUserId());
 
     // デフォルト値
-    sheetAccessor.setQuizNo(1);
-    console.log(`QuizNo:${sheetAccessor.getQuizNo()}`);
+    sheetAccessor.setQuizNo(getUserId(), 1);
+    console.log(`QuizNo:${sheetAccessor.getQuizNo(getUserId())}`);
     console.log("currentQuiz:", quiz.current());
 
     // 値指定
-    sheetAccessor.setQuizNo(3);
-    console.log(`QuizNo:${sheetAccessor.getQuizNo()}`);
+    sheetAccessor.setQuizNo(getUserId(), 3);
+    console.log(`QuizNo:${sheetAccessor.getQuizNo(getUserId())}`);
     console.log("currentQuiz:", quiz.current());
 
-    sheetAccessor.setQuizNo(beforeQuizNo);
+    sheetAccessor.setQuizNo(getUserId(), beforeQuizNo);
 }
 
 function TestQuiz_Find() {
@@ -30,15 +30,15 @@ function TestAnswer() {
 }
 
 function TestQuizFlow() {
-    sheetAccessor.setStatus(State.Finish);
-    sheetAccessor.setQuizNo(0);
+    sheetAccessor.setStatus(getUserId(), State.Finish);
+    sheetAccessor.setQuizNo(getUserId(), 0);
     let isStart = false;
     let anserindex = 0;
     const answerlist = ['〇', 'Row', 'ウスヒラタケ', '札幌'];
 
     while (true) {
-        const BeforeStatus = sheetAccessor.getStatus();
-        const BeforeQuizNo = sheetAccessor.getQuizNo();
+        const BeforeStatus = sheetAccessor.getStatus(getUserId());
+        const BeforeQuizNo = sheetAccessor.getQuizNo(getUserId());
 
         if (!isStart) {
             quiz.Start();
@@ -51,11 +51,11 @@ function TestQuizFlow() {
             console.log("currentQuiz:", quiz.current());
         }
 
-        console.log(`Status:${BeforeStatus} -> ${sheetAccessor.getStatus()}`);
-        console.log(`QuizNo:${BeforeQuizNo} -> ${sheetAccessor.getQuizNo()}`);
+        console.log(`Status:${BeforeStatus} -> ${sheetAccessor.getStatus(getUserId())}`);
+        console.log(`QuizNo:${BeforeQuizNo} -> ${sheetAccessor.getQuizNo(getUserId())}`);
 
         const quizitem = quiz.current();
-        if (quizitem === null && sheetAccessor.getStatus() === State.Finish)
+        if (quizitem === null && sheetAccessor.getStatus(getUserId()) === State.Finish)
             break;
     }
 }

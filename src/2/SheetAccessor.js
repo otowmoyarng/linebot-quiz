@@ -9,53 +9,89 @@ const Sheet = {
 
 class SheetAccessor {
 
+    /**
+     * ユーザーを取得する
+     * @param userId ユーザーID
+     * @returns 該当ユーザー行
+     */
+    GetUser(userId) {
+        const quizCount = this.getAllQuizzes().length;
+        const result = Sheet.User.createTextFinder(userId).findAll();
+        let userData;
+        result.forEach(row => {
+            userData = Sheet.User.getRange(row.getRow(), 1, 1, quizCount + 3).getValues();
+        });
+        return userData;
+    }
+
+    /**
+     * 該当ユーザーを更新する
+     * @param userId ユーザーID
+     * @param columnNo カラム
+     * @param modifyValue 変更する値
+     */
+    UpdateUser(userId, columnNo, modifyValue) {
+        const result = Sheet.User.createTextFinder(userId).findAll();
+        result.forEach(row => {
+            Sheet.User.getRange(row.getRow(), columnNo).setValue(modifyValue);
+        });
+    }
+
     addUser(userId) {
-        const insertRow = [userId, State.Waiting, DelFlg.NotDelete].concat(Array.from({ length: this.getAllQuizzes().length }, () => ''));
+        const insertRow = [userId, State.Waiting, 0].concat(Array.from({ length: this.getAllQuizzes().length }, () => ''));
         Sheet.User.appendRow(insertRow);
     }
 
     removeUser(userId) {
-        const result = Sheet.User.createTextFinder(userId).findAll();
-        result.forEach(row => {
-            Sheet.User.getRange(row.getRow(), 3).setValue(DelFlg.Deleted);
-        });
+        Sheet.User.deleteRow(userId);
+        //this.UpdateUser(userId, 3, DelFlg.Deleted);
     }
 
     getAllUsers() {
         return Sheet.User.getDataRange().getValues();
     }
 
-    getStatus() {
-        return Sheet.Quiz.getRange('Status').getValue();
+    getStatus(userId) {
+        //return Sheet.Quiz.getRange('Status').getValue();
+        const userData = this.GetUser(userId);
+        return userData[0][1];
     }
 
-    setStatus(status = "") {
-        Sheet.Quiz.getRange('Status').setValue(status);
+    setStatus(userId, status = "") {
+        // Sheet.Quiz.getRange('Status').setValue(status);
+        this.UpdateUser(userId, 2, status);
     }
 
-    getQuizNo() {
-        return Sheet.Quiz.getRange('QuizNo').getValue();
+    getQuizNo(userId) {
+        //return Sheet.Quiz.getRange('QuizNo').getValue();
+        const userData = this.GetUser(userId);
+        return userData[0][2];
     }
 
-    setQuizNo(quizNo = 0) {
-        Sheet.Quiz.getRange('QuizNo').setValue(quizNo);
+    setQuizNo(userId, quizNo = 0) {
+        //Sheet.Quiz.getRange('QuizNo').setValue(quizNo);
+        this.UpdateUser(userId, 3, quizNo);
     }
 
-    countUpQuizNo() {
-        let currentQuizNo = this.getQuizNo();
-        Sheet.Quiz.getRange('QuizNo').setValue(++currentQuizNo);
+    countUpQuizNo(userId) {
+        let currentQuizNo = this.getQuizNo(userId);
+        //Sheet.Quiz.getRange('QuizNo').setValue(++currentQuizNo);
+        this.UpdateUser(userId, 3, ++currentQuizNo);
     }
 
     getAllQuizzes() {
         return Sheet.Quiz.getRange(QuizRange).getValues();
     }
 
-    setAnswer(question, answer) {
-        const result = Sheet.Quiz.createTextFinder(question).findAll();
-        result.forEach(row => {
-            var updcell = row.getA1Notation().replace("D", "H");
-            Sheet.Quiz.getRange(`${updcell}`).setValue(answer);
-        });
+    //setAnswer(question, answer) {
+    setAnswer(userId, answer) {
+        // const result = Sheet.Quiz.createTextFinder(question).findAll();
+        // result.forEach(row => {
+        //     var updcell = row.getA1Notation().replace("D", "H");
+        //     Sheet.Quiz.getRange(`${updcell}`).setValue(answer);
+        // });
+        let currentQuizNo = this.getQuizNo(userId);
+        this.UpdateUser(userId, 3 + currentQuizNo, answer);
     }
 }
 
