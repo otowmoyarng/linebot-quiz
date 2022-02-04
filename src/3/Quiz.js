@@ -47,7 +47,6 @@ class Quiz {
      * @param userId ユーザーID
      */
     Answer(text, userId) {
-        //sheetAccessor.setAnswer(this.current().Question, text);
         sheetAccessor.setAnswer(userId, text);
     }
 

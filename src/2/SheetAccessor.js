@@ -52,30 +52,25 @@ class SheetAccessor {
     }
 
     getStatus(userId) {
-        //return Sheet.Quiz.getRange('Status').getValue();
         const userData = this.GetUser(userId);
         return userData[0][1];
     }
 
     setStatus(userId, status = "") {
-        // Sheet.Quiz.getRange('Status').setValue(status);
         this.UpdateUser(userId, 2, status);
     }
 
     getQuizNo(userId) {
-        //return Sheet.Quiz.getRange('QuizNo').getValue();
         const userData = this.GetUser(userId);
         return userData[0][2];
     }
 
     setQuizNo(userId, quizNo = 0) {
-        //Sheet.Quiz.getRange('QuizNo').setValue(quizNo);
         this.UpdateUser(userId, 3, quizNo);
     }
 
     countUpQuizNo(userId) {
         let currentQuizNo = this.getQuizNo(userId);
-        //Sheet.Quiz.getRange('QuizNo').setValue(++currentQuizNo);
         this.UpdateUser(userId, 3, ++currentQuizNo);
     }
 
@@ -83,13 +78,7 @@ class SheetAccessor {
         return Sheet.Quiz.getRange(QuizRange).getValues();
     }
 
-    //setAnswer(question, answer) {
     setAnswer(userId, answer) {
-        // const result = Sheet.Quiz.createTextFinder(question).findAll();
-        // result.forEach(row => {
-        //     var updcell = row.getA1Notation().replace("D", "H");
-        //     Sheet.Quiz.getRange(`${updcell}`).setValue(answer);
-        // });
         let currentQuizNo = this.getQuizNo(userId);
         this.UpdateUser(userId, 3 + currentQuizNo, answer);
     }

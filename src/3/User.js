@@ -33,36 +33,6 @@ class User {
         }
     }
 
-    // /**
-    //  * ユーザー全件取得
-    //  * @returns 全ユーザー
-    //  */
-    // getAll() {
-    //     const quizCount = sheetAccessor.getAllQuizzes().length;
-    //     const allUsers = sheetAccessor.getAllUsers();
-    //     let users = [];
-    //     allUsers.forEach((row, index) => {
-    //         // 先頭行を除く
-    //         if (index > 0) {
-    //             let userData = {
-    //                 UserId: row[0],
-    //                 State: row[1],
-    //                 //DelFlg: row[2],
-    //                 CurrentQuizNo: row[2],
-    //                 rowId: index + 1
-    //             };
-
-    //             let answerIndex = 0;
-    //             while (answerIndex < quizCount) {
-    //                 answerIndex++;
-    //                 userData[`Answer${answerIndex}`] = row[answerIndex + 2];
-    //             }
-    //             users.push(userData);
-    //         }
-    //     });
-    //     return users;
-    // }
-
     /**
      * ユーザー検索。
      * @param searchUserId ユーザーID

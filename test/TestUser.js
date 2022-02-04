@@ -11,10 +11,6 @@ function TestUsers_remove() {
     console.log("getAllUsers:", sheetAccessor.getAllUsers());
 }
 
-// function TestUsers_getAll() {
-//     console.log("getAll:", user.getAll());
-// }
-
 function TestUsers_find() {
     console.log("hit:", user.find(getTestUserId()));
     console.log("not hit:", user.find("hoge"));

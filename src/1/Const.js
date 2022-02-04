@@ -50,6 +50,10 @@ function IsNullOrEmpty(strings) {
     return false;
 }
 
+/**
+ * プロジェクトのプロパティに登録されたテスト用のユーザーIDを取得する。
+ * @returns テスト用ユーザーID
+ */
 function getTestUserId() {
     const value = PropertiesService.getScriptProperties().getProperty(GASPropertiesKey.UserId);
     if (value === null) {
