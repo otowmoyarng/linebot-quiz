@@ -29,9 +29,10 @@ function TestAnswer() {
 
     while (quizNo <= quizCount) {
         quiz.Answer(answerList[quizNo - 1], GetTestUserId());
-        console.log(`Answer No${quizNo}`, sheetAccessor.GetUser(GetTestUserId()));
+        console.log(`AnswerNo${quizNo}, expect:${answerList[quizNo - 1]}, result:${sheetAccessor.GetAnswer(GetTestUserId(), quizNo)}`);
 
         sheetAccessor.CountUpQuizNo(GetTestUserId());
         quizNo = sheetAccessor.GetQuizNo(GetTestUserId());
     }
+    console.log("Answers:", sheetAccessor.GetUser(GetTestUserId()));
 }

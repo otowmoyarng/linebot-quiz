@@ -17,9 +17,11 @@ class SheetAccessor {
     GetUser(userId) {
         const quizCount = this.GetAllQuizzes().length;
         const result = Sheet.User.createTextFinder(userId).findAll();
+
         let userData;
         result.forEach(row => {
-            userData = Sheet.User.getRange(row.getRow(), 1, 1, quizCount + 3).getValues();
+            // 縦：ユーザーIDの行のみ、横は先頭からquizシートの問題数まで
+            userData = Sheet.User.getRange(row.getRow(), 1, 1, quizCount + UserColumnNo.CurrentQuizNo).getValues();
         });
         return userData;
     }
@@ -55,20 +57,20 @@ class SheetAccessor {
 
     GetStatus(userId) {
         const userData = this.GetUser(userId);
-        return userData[0][1];
+        return userData[0][UserColumnNo.State - 1];
     }
 
     SetStatus(userId, status = "") {
-        this.updateUser(userId, 2, status);
+        this.updateUser(userId, UserColumnNo.State, status);
     }
 
     GetQuizNo(userId) {
         const userData = this.GetUser(userId);
-        return userData[0][2];
+        return userData[0][UserColumnNo.CurrentQuizNo - 1];
     }
 
     SetQuizNo(userId, quizNo = 0) {
-        this.updateUser(userId, 3, quizNo);
+        this.updateUser(userId, UserColumnNo.CurrentQuizNo, quizNo);
     }
 
     CountUpQuizNo(userId) {
@@ -80,9 +82,14 @@ class SheetAccessor {
         return Sheet.Quiz.getRange(QuizRange).getValues();
     }
 
+    GetAnswer(userId, answerNo) {
+        const userData = this.GetUser(userId);
+        return userData[0][(UserColumnNo.CurrentQuizNo - 1) + answerNo];
+    }
+
     SetAnswer(userId, answer) {
         let currentQuizNo = this.GetQuizNo(userId);
-        this.updateUser(userId, 3 + currentQuizNo, answer);
+        this.updateUser(userId, UserColumnNo.CurrentQuizNo + currentQuizNo, answer);
     }
 }
 

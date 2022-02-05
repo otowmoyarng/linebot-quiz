@@ -4,21 +4,25 @@ const State = {
     Finish: '回答終了',
 };
 
-const DelFlg = {
-    NotDelete: '',
-    Deleted: '削除済',
-};
-
-const Operation = {
-    Start: '開始',
-    Again: 'もう一度',
-    Scoring: '答え合わせ',
+/**
+ * userシートの列番号(開始値＝1)
+ */
+const UserColumnNo = {
+    UserId: 1,
+    State: 2,
+    CurrentQuizNo: 3,
 };
 
 const NickNameStatus = {
     None: `none`,
     Setting: `setting`
 }
+
+const Operation = {
+    Start: '開始',
+    Again: 'もう一度',
+    Scoring: '答え合わせ',
+};
 
 const QuestionType = {
     Confirm: `確認`,

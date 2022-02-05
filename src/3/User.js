@@ -45,16 +45,16 @@ class User {
         }
 
         let userData = {
-            UserId: result[0][0],
-            State: result[0][1],
-            CurrentQuizNo: result[0][2],
+            UserId: result[0][UserColumnNo.UserId - 1],
+            State: result[0][UserColumnNo.State - 1],
+            CurrentQuizNo: result[0][UserColumnNo.CurrentQuizNo - 1],
         };
 
         const quizCount = sheetAccessor.GetAllQuizzes().length;
         let answerIndex = 0;
         while (answerIndex < quizCount) {
             answerIndex++;
-            userData[`Answer${answerIndex}`] = result[0][answerIndex + 2];
+            userData[`Answer${answerIndex}`] = result[0][(UserColumnNo.CurrentQuizNo - 1) + answerIndex];
         }
         return userData;
     }
