@@ -1,15 +1,15 @@
-function BroadcastMessage() {
+function LineApiTest_BroadcastMessage() {
     const messsage = 'これは送信テストです';
     LineApiDriver.BroadcastMessage(messsage);
 }
 
-function PushTextMessage() {
+function LineApiTest_PushTextMessage() {
     console.log("テキストメッセージ：プッシュ送信開始");
     LineApiDriver.PushTextMessage(GetTestUserId(), ["pushメッセージ送信", "abcde"]);
     console.log("テキストメッセージ：プッシュ送信完了");
 }
 
-function PushConfirmMessage() {
+function LineApiTest_PushConfirmMessage() {
     console.log("確認テンプレートメッセージ：プッシュ送信開始");
     const quizes = quiz.getAll();
     quizes.forEach(quizItem => {
@@ -21,7 +21,7 @@ function PushConfirmMessage() {
     console.log("確認テンプレートメッセージ：プッシュ送信終了");
 }
 
-function PushBottunMessage() {
+function LineApiTest_PushBottunMessage() {
     console.log("ボタンテンプレートメッセージ：プッシュ送信開始");
     const quizes = quiz.getAll();
     quizes.forEach(quizItem => {

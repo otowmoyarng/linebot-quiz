@@ -1,4 +1,4 @@
-function Answer() {
+function QuizTest_Answer() {
     const quizCount = sheetAccessor.GetAllQuizzes().length;
     const answerList = ['〇', 'Row', 'シイタケ', '東京'];
 
@@ -16,15 +16,15 @@ function Answer() {
     console.log("score:", quiz.score(GetTestUserId()));
 }
 
-function getAll() {
+function QuizTest_getAll() {
     console.log("getAllQuizzes:", quiz.getAll());
 }
 
-function find() {
+function QuizTest_find() {
     console.log("findQuiz:", quiz.find(2));
 }
 
-function current() {
+function QuizTest_current() {
     const beforeQuizNo = sheetAccessor.GetQuizNo(GetTestUserId());
 
     sheetAccessor.SetQuizNo(GetTestUserId(), 1);

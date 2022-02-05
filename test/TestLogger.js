@@ -1,7 +1,7 @@
 /**
  * 書き込み用テスト
  */
-function WriteLog() {
+function LoggerTest_WriteLog() {
     const messages = ["hogehoge", "fugauga", "amazon"];
     messages.forEach(m => Logger.WriteLog(m));
 
