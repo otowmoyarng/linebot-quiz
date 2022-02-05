@@ -5,7 +5,7 @@ function TestBroadcastMessage() {
 
 function TestPushMessage() {
     console.log("テキストメッセージ：プッシュ送信開始");
-    LineApiDriver.PushTextMessage(getTestUserId(), ["pushメッセージ送信", "abcde"]);
+    LineApiDriver.PushTextMessage(GetTestUserId(), ["pushメッセージ送信", "abcde"]);
     console.log("テキストメッセージ：プッシュ送信完了");
 }
 
@@ -15,7 +15,7 @@ function TestPushConfirmMessage() {
     quizes.forEach(quizItem => {
         if (quizItem.QuizType === QuestionType.Confirm) {
             console.log("Quiz:", quizItem);
-            LineApiDriver.PushConfirmMessage(getTestUserId(), quizItem.Question, quizItem.Choices);
+            LineApiDriver.PushConfirmMessage(GetTestUserId(), quizItem.Question, quizItem.Choices);
         }
     });
     console.log("確認テンプレートメッセージ：プッシュ送信終了");
@@ -30,6 +30,6 @@ function TestPushButtonMessage() {
             LineApiDriver.PushBottunMessage(getUserId(GASPropertiesKey.UserId), quizItem.QuizNo, quizItem.Imgsrc, quizItem.Question, quizItem.Choices);
         }
     });
-    LineApiDriver.PushBottunMessage(getUserId(GASPropertiesKey.UserId), '結果発表', null, quiz.Score(), `${Operation.Again},${Operation.Scoring}`);
+    LineApiDriver.PushBottunMessage(getUserId(GASPropertiesKey.UserId), '結果発表', null, quiz.score(), `${Operation.Again},${Operation.Scoring}`);
     console.log("ボタンテンプレートメッセージ：プッシュ送信終了");
 }

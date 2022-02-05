@@ -19,17 +19,17 @@ function doPost(request) {
 function routing(event) {
     //Logger.WriteLog(`event.type:${event.type}, userId:${event.source.userId}, test:${event.message.text}, replyToken:${event.replyToken}`);
 
-    // アクセスユーザーを登録
+    // 友達追加時またはブロック解除時
     if (event.type == 'follow') {
-        return follow(event.source.userId);
+        return user.Add(event.source.userId);
     }
 
-    // ブロックされたとき、該当ユーザーを削除
+    // ブロック時
     if (event.type == 'unfollow') {
-        return unfollow(event.source.userId);
+        return user.Remove(event.source.userId);
     }
 
-    if (sheetAccessor.getStatus(event.source.userId) === State.Answering) {
+    if (sheetAccessor.GetStatus(event.source.userId) === State.Answering) {
         // クイズ中
         // 回答を記入して次の問題を出す
         quiz.Answer(event.message.text, event.source.userId);

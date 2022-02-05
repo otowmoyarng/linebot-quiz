@@ -1,24 +1,24 @@
 class User {
 
     /**
-     * ユーザー追加
+     * ユーザーを追加する
      * @param userId ユーザーID
      */
-    add(userId) {
+    Add(userId) {
         const user = this.find(userId);
         // 既に登録済み
         if (user !== null) {
             return;
         }
 
-        sheetAccessor.addUser(userId);
+        sheetAccessor.AddUser(userId);
     }
 
     /**
-     * ユーザー削除
+     * ユーザーを削除する
      * @param userId ユーザーID
      */
-    remove(userId) {
+    Remove(userId) {
         const lock = LockService.getDocumentLock();
         if (lock.tryLock(1000)) {
             const user = this.find(userId);
@@ -28,7 +28,7 @@ class User {
                 return;
             }
 
-            sheetAccessor.removeUser(userId)
+            sheetAccessor.RemoveUser(userId)
             lock.releaseLock();
         }
     }
@@ -50,7 +50,7 @@ class User {
             CurrentQuizNo: result[0][2],
         };
 
-        const quizCount = sheetAccessor.getAllQuizzes().length;
+        const quizCount = sheetAccessor.GetAllQuizzes().length;
         let answerIndex = 0;
         while (answerIndex < quizCount) {
             answerIndex++;
@@ -61,17 +61,3 @@ class User {
 }
 
 const user = new User();
-
-/**
- * フォロー時の処理
- */
-function follow(userId) {
-    return user.add(userId);
-}
-
-/**
- * フォロー解除時の処理
- */
-function unfollow(userId) {
-    return user.remove(userId);
-}

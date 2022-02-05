@@ -33,7 +33,7 @@ const GASPropertiesKey = {
 const QuizRange = "A16:H19";
 
 //日付の宣言
-function getCurrentTime() {
+function GetCurrentTime() {
     return Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
 }
 
@@ -54,7 +54,7 @@ function IsNullOrEmpty(strings) {
  * プロジェクトのプロパティに登録されたテスト用のユーザーIDを取得する。
  * @returns テスト用ユーザーID
  */
-function getTestUserId() {
+function GetTestUserId() {
     const value = PropertiesService.getScriptProperties().getProperty(GASPropertiesKey.UserId);
     if (value === null) {
         console.error(`key[${key}]がプロパティに存在しません。`);

@@ -7,9 +7,9 @@ class Quiz {
      */
     Start(replyToken, userId) {
         // ステータスを回答中とする
-        sheetAccessor.setStatus(userId, State.Answering);
-        // 問題数を初期化する
-        sheetAccessor.setQuizNo(userId);
+        sheetAccessor.SetStatus(userId, State.Answering);
+        // 問題数と回答を初期化する
+        sheetAccessor.SetQuizNo(userId);
         return this.Question(replyToken, userId);
     }
 
@@ -20,15 +20,15 @@ class Quiz {
      */
     Question(replyToken, userId) {
         // 問題数をカウントアップする
-        sheetAccessor.countUpQuizNo(userId);
+        sheetAccessor.CountUpQuizNo(userId);
 
         const quizItem = this.current(userId);
 
         if (quizItem === null) {
             // ステータスを回答終了とする
-            sheetAccessor.setStatus(userId, State.Finish);
+            sheetAccessor.SetStatus(userId, State.Finish);
             // 結果発表
-            return LineApiDriver.ReplyButtonMessage(replyToken, '結果発表', null, this.Score(userId), `${Operation.Again},${Operation.Scoring}`);
+            return LineApiDriver.ReplyButtonMessage(replyToken, '結果発表', null, this.score(userId), `${Operation.Again},${Operation.Scoring}`);
         } else {
             switch (quizItem.QuizType) {
                 case QuestionType.Button:
@@ -47,14 +47,14 @@ class Quiz {
      * @param userId ユーザーID
      */
     Answer(text, userId) {
-        sheetAccessor.setAnswer(userId, text);
+        sheetAccessor.SetAnswer(userId, text);
     }
 
     /**
      * 採点する
      * @param userId ユーザーID
      */
-    Score(userId) {
+    score(userId) {
         const quizes = quiz.getAll();
         const questionCount = quizes.length;
         const correctCount = quizes.filter(quizItem => quizItem.Judge === 'OK').length;
@@ -85,7 +85,7 @@ class Quiz {
     }
 
     getAll() {
-        const quizValues = sheetAccessor.getAllQuizzes();
+        const quizValues = sheetAccessor.GetAllQuizzes();
         const quizzes = quizValues.map((row, index) => {
             return {
                 QuizNo: row[0],
@@ -113,7 +113,7 @@ class Quiz {
     }
 
     current(userId) {
-        return this.find(sheetAccessor.getQuizNo(userId));
+        return this.find(sheetAccessor.GetQuizNo(userId));
     }
 }
 

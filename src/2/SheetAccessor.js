@@ -15,7 +15,7 @@ class SheetAccessor {
      * @returns 該当ユーザー行
      */
     GetUser(userId) {
-        const quizCount = this.getAllQuizzes().length;
+        const quizCount = this.GetAllQuizzes().length;
         const result = Sheet.User.createTextFinder(userId).findAll();
         let userData;
         result.forEach(row => {
@@ -30,59 +30,59 @@ class SheetAccessor {
      * @param columnNo カラム
      * @param modifyValue 変更する値
      */
-    UpdateUser(userId, columnNo, modifyValue) {
+    updateUser(userId, columnNo, modifyValue) {
         const result = Sheet.User.createTextFinder(userId).findAll();
         result.forEach(row => {
             Sheet.User.getRange(row.getRow(), columnNo).setValue(modifyValue);
         });
     }
 
-    addUser(userId) {
-        const insertRow = [userId, State.Waiting, 0].concat(Array.from({ length: this.getAllQuizzes().length }, () => ''));
+    AddUser(userId) {
+        const insertRow = [userId, State.Waiting, 0].concat(Array.from({ length: this.GetAllQuizzes().length }, () => ''));
         Sheet.User.appendRow(insertRow);
     }
 
-    removeUser(userId) {
+    RemoveUser(userId) {
         const result = Sheet.User.createTextFinder(userId).findAll();
         result.forEach(row => {
             Sheet.User.deleteRow(row.getRow());
         });
     }
 
-    getAllUsers() {
+    GetAllUsers() {
         return Sheet.User.getDataRange().getValues();
     }
 
-    getStatus(userId) {
+    GetStatus(userId) {
         const userData = this.GetUser(userId);
         return userData[0][1];
     }
 
-    setStatus(userId, status = "") {
-        this.UpdateUser(userId, 2, status);
+    SetStatus(userId, status = "") {
+        this.updateUser(userId, 2, status);
     }
 
-    getQuizNo(userId) {
+    GetQuizNo(userId) {
         const userData = this.GetUser(userId);
         return userData[0][2];
     }
 
-    setQuizNo(userId, quizNo = 0) {
-        this.UpdateUser(userId, 3, quizNo);
+    SetQuizNo(userId, quizNo = 0) {
+        this.updateUser(userId, 3, quizNo);
     }
 
-    countUpQuizNo(userId) {
-        let currentQuizNo = this.getQuizNo(userId);
-        this.UpdateUser(userId, 3, ++currentQuizNo);
+    CountUpQuizNo(userId) {
+        let currentQuizNo = this.GetQuizNo(userId);
+        this.updateUser(userId, 3, ++currentQuizNo);
     }
 
-    getAllQuizzes() {
+    GetAllQuizzes() {
         return Sheet.Quiz.getRange(QuizRange).getValues();
     }
 
-    setAnswer(userId, answer) {
-        let currentQuizNo = this.getQuizNo(userId);
-        this.UpdateUser(userId, 3 + currentQuizNo, answer);
+    SetAnswer(userId, answer) {
+        let currentQuizNo = this.GetQuizNo(userId);
+        this.updateUser(userId, 3 + currentQuizNo, answer);
     }
 }
 

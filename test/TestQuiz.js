@@ -3,17 +3,17 @@ function TestQuiz_GetAll() {
 }
 
 function TestQuiz_Current() {
-    const beforeQuizNo = sheetAccessor.getQuizNo(getTestUserId());
+    const beforeQuizNo = sheetAccessor.GetQuizNo(GetTestUserId());
 
-    sheetAccessor.setQuizNo(getTestUserId(), 1);
-    console.log(`QuizNo:${sheetAccessor.getQuizNo(getTestUserId())}`);
-    console.log("currentQuiz:", quiz.current(getTestUserId()));
+    sheetAccessor.SetQuizNo(GetTestUserId(), 1);
+    console.log(`QuizNo:${sheetAccessor.GetQuizNo(GetTestUserId())}`);
+    console.log("currentQuiz:", quiz.current(GetTestUserId()));
 
-    sheetAccessor.setQuizNo(getTestUserId(), 3);
-    console.log(`QuizNo:${sheetAccessor.getQuizNo(getTestUserId())}`);
-    console.log("currentQuiz:", quiz.current(getTestUserId()));
+    sheetAccessor.SetQuizNo(GetTestUserId(), 3);
+    console.log(`QuizNo:${sheetAccessor.GetQuizNo(GetTestUserId())}`);
+    console.log("currentQuiz:", quiz.current(GetTestUserId()));
 
-    sheetAccessor.setQuizNo(getTestUserId(), beforeQuizNo);
+    sheetAccessor.SetQuizNo(GetTestUserId(), beforeQuizNo);
 }
 
 function TestQuiz_Find() {
@@ -21,17 +21,17 @@ function TestQuiz_Find() {
 }
 
 function TestAnswer() {
-    const quizCount = sheetAccessor.getAllQuizzes().length;
+    const quizCount = sheetAccessor.GetAllQuizzes().length;
     const answerList = ['A', '@', '1', 'z'];
 
-    sheetAccessor.setQuizNo(getTestUserId(), 1);
-    let quizNo = sheetAccessor.getQuizNo(getTestUserId());
+    sheetAccessor.SetQuizNo(GetTestUserId(), 1);
+    let quizNo = sheetAccessor.GetQuizNo(GetTestUserId());
 
     while (quizNo <= quizCount) {
-        quiz.Answer(answerList[quizNo - 1], getTestUserId());
-        console.log(`Answer No${quizNo}`, sheetAccessor.GetUser(getTestUserId()));
+        quiz.Answer(answerList[quizNo - 1], GetTestUserId());
+        console.log(`Answer No${quizNo}`, sheetAccessor.GetUser(GetTestUserId()));
 
-        sheetAccessor.countUpQuizNo(getTestUserId());
-        quizNo = sheetAccessor.getQuizNo(getTestUserId());
+        sheetAccessor.CountUpQuizNo(GetTestUserId());
+        quizNo = sheetAccessor.GetQuizNo(GetTestUserId());
     }
 }
