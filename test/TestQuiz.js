@@ -1,28 +1,6 @@
-function TestQuiz_GetAll() {
-    console.log("getAllQuizzes:", quiz.getAll());
-}
-
-function TestQuiz_Current() {
-    const beforeQuizNo = sheetAccessor.GetQuizNo(GetTestUserId());
-
-    sheetAccessor.SetQuizNo(GetTestUserId(), 1);
-    console.log(`QuizNo:${sheetAccessor.GetQuizNo(GetTestUserId())}`);
-    console.log("currentQuiz:", quiz.current(GetTestUserId()));
-
-    sheetAccessor.SetQuizNo(GetTestUserId(), 3);
-    console.log(`QuizNo:${sheetAccessor.GetQuizNo(GetTestUserId())}`);
-    console.log("currentQuiz:", quiz.current(GetTestUserId()));
-
-    sheetAccessor.SetQuizNo(GetTestUserId(), beforeQuizNo);
-}
-
-function TestQuiz_Find() {
-    console.log("findQuiz:", quiz.find(2));
-}
-
-function TestAnswer() {
+function Answer() {
     const quizCount = sheetAccessor.GetAllQuizzes().length;
-    const answerList = ['A', '@', '1', 'z'];
+    const answerList = ['〇', 'Row', 'シイタケ', '東京'];
 
     sheetAccessor.SetQuizNo(GetTestUserId(), 1);
     let quizNo = sheetAccessor.GetQuizNo(GetTestUserId());
@@ -35,4 +13,27 @@ function TestAnswer() {
         quizNo = sheetAccessor.GetQuizNo(GetTestUserId());
     }
     console.log("Answers:", sheetAccessor.GetUser(GetTestUserId()));
+    console.log("score:", quiz.score(GetTestUserId()));
+}
+
+function getAll() {
+    console.log("getAllQuizzes:", quiz.getAll());
+}
+
+function find() {
+    console.log("findQuiz:", quiz.find(2));
+}
+
+function current() {
+    const beforeQuizNo = sheetAccessor.GetQuizNo(GetTestUserId());
+
+    sheetAccessor.SetQuizNo(GetTestUserId(), 1);
+    console.log(`QuizNo:${sheetAccessor.GetQuizNo(GetTestUserId())}`);
+    console.log("currentQuiz:", quiz.current(GetTestUserId()));
+
+    sheetAccessor.SetQuizNo(GetTestUserId(), 3);
+    console.log(`QuizNo:${sheetAccessor.GetQuizNo(GetTestUserId())}`);
+    console.log("currentQuiz:", quiz.current(GetTestUserId()));
+
+    sheetAccessor.SetQuizNo(GetTestUserId(), beforeQuizNo);
 }

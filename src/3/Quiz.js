@@ -55,9 +55,15 @@ class Quiz {
      * @param userId ユーザーID
      */
     score(userId) {
-        const quizes = quiz.getAll();
-        const questionCount = quizes.length;
-        const correctCount = quizes.filter(quizItem => quizItem.Judge === 'OK').length;
+        const quizList = quiz.getAll();
+        const questionCount = quizList.length;
+        let correctCount = 0;
+        for (let index = 0; index < questionCount; index++) {
+            const answer = sheetAccessor.GetAnswer(userId, index + 1);
+            if (quizList[index].Correct == answer) {
+                correctCount++;
+            }
+        }
         return `あなたは${questionCount}問中${correctCount}問正解しました。点数は${Math.floor(correctCount / questionCount * 100)}点です。`;
     }
 
@@ -67,17 +73,32 @@ class Quiz {
      * @param userId ユーザーID
      */
     Expose(replyToken, userId) {
-        const quizes = quiz.getAll();
+        // const quizes = quiz.getAll();
+        // let messages = [];
+        // quizes.forEach(quizItem => {
+        //     const message = `Q${quizItem.QuizNo}  正解：${quizItem.Correct}、あなたの回答：${quizItem.Answer}`;
+        //     // 応答メッセージは最大5件
+        //     if (messages.length === 5) {
+        //         LineApiDriver.ReplyTextMessage(replyToken, messages);
+        //         messages = [];
+        //     }
+        //     messages.push(message);
+        // });
+
+        const quizList = quiz.getAll();
+        const questionCount = quizList.length;
         let messages = [];
-        quizes.forEach(quizItem => {
-            const message = `Q${quizItem.QuizNo}  正解：${quizItem.Correct}、あなたの回答：${quizItem.Answer}`;
+
+        for (let index = 0; index < questionCount; index++) {
+            const answer = sheetAccessor.GetAnswer(userId, index + 1);
+            const message = `Q${quizList[index].QuizNo}  正解：${quizList[index].Correct}、あなたの回答：${answer}`;
             // 応答メッセージは最大5件
-            if (messages.length === 5) {
+            if (messages.length === ReplyMessageSendMaxCount) {
                 LineApiDriver.ReplyTextMessage(replyToken, messages);
                 messages = [];
             }
             messages.push(message);
-        });
+        }
 
         if (messages.length > 0) {
             LineApiDriver.ReplyTextMessage(replyToken, messages);
