@@ -1,3 +1,15 @@
+function LineApiTest_convertURL() {
+    const urls = [
+        "https://drive.google.com/file/d/1H8xmhD9Hfq3Xip5obLZwL70zGkV4CjLI/view?usp=sharin",
+        "https://drive.google.com/file/d/1H8xmhD9Hfq3Xip5obLZwL70zGkV4CjLI/view?usp=sharing",
+        "https://drive.google.com/file/e/1H8xmhD9Hfq3Xip5obLZwL70zGkV4CjLI/view?usp=sharin",
+        "https://drive.google.com/uc?id=1H8xmhD9Hfq3Xip5obLZwL70zGkV4CjLI"
+    ];
+    urls.forEach(url => {
+        console.log(`url:${url}, converted:${LineApiDriver.convertURL(url)}`);
+    });
+}
+
 function LineApiTest_BroadcastMessage() {
     const messsage = 'これは送信テストです';
     LineApiDriver.BroadcastMessage(messsage);
