@@ -98,14 +98,14 @@ class Quiz {
         const quizValues = sheetAccessor.GetAllQuizzes();
         const quizzes = quizValues.map((row, index) => {
             return {
-                QuizNo: row[0],
-                QuizType: row[1],
-                ImgSrc: row[2],
-                Question: row[3],
-                Choices: row[4],
-                Correct: row[5],
-                Judge: row[6],
-                Answer: row[7],
+                QuizNo: row[QuizColumnNo.QuizNo],
+                QuizType: row[QuizColumnNo.QuizType],
+                ImgSrc: row[QuizColumnNo.ImgSrc],
+                Question: row[QuizColumnNo.Question],
+                Choices: row[QuizColumnNo.Choices],
+                Correct: row[QuizColumnNo.Correct],
+                // Judge: row[6],
+                // Answer: row[7],
                 rowId: index + 1
             };
         });

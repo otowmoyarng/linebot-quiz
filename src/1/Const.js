@@ -13,9 +13,16 @@ const UserColumnNo = {
     CurrentQuizNo: 3,
 };
 
-const NickNameStatus = {
-    None: `none`,
-    Setting: `setting`
+/**
+ * quizシートの列番号(開始値＝0)
+ */
+const QuizColumnNo = {
+    QuizNo: 0,
+    QuizType: 1,
+    ImgSrc: 2,
+    Question: 3,
+    Choices: 4,
+    Correct: 5,
 }
 
 const Operation = {
