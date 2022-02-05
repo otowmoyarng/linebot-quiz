@@ -8,26 +8,18 @@ const LineAPI_EntryPoint = {
     UploadRichMenu: 'https://api-data.line.me/v2/bot/richmenu',
     AttachRichMenu: 'https://api.line.me/v2/bot/user'
 };
-const CHANNEL_ACCESS_TOKEN = Sheet.Config.getRange('Token').getValue();
+const ReplyMessageSendMaxCount = 5;
+const ChannelAccessToken = Sheet.Config.getRange('Token').getValue();
 const OptionBase = {
     method: 'post',
     headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + CHANNEL_ACCESS_TOKEN,
+        Authorization: 'Bearer ' + ChannelAccessToken,
     },
     payload: ''
 };
 
 class LineApi {
-    getUserDisplayName(userId) {
-        const url = LineAPI_EntryPoint.Profile + userId;
-        const userProfile = UrlFetchApp.fetch(url, {
-            headers: {
-                Authorization: 'Bearer ' + CHANNEL_ACCESS_TOKEN,
-            },
-        });
-        return JSON.parse(userProfile).displayName;
-    }
 
     /**
      * テキストメッセージをリプライ送信する

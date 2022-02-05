@@ -1,56 +1,63 @@
 class User {
-    add(userId) {
+
+    /**
+     * ユーザーを追加する
+     * @param userId ユーザーID
+     */
+    Add(userId) {
         const user = this.find(userId);
-        if (user != null) {
-            // 既に登録済み
+        // 既に登録済み
+        if (user !== null) {
             return;
         }
 
-        // 新規アクセス
-        const userName = LineApiDriver.getUserDisplayName(userId);
-        sheetAccessor.addUser(userId, userName, getCurrentTime(), NickNameStatus.None);
-
-        return;
+        sheetAccessor.AddUser(userId);
     }
 
-    remove(userId) {
+    /**
+     * ユーザーを削除する
+     * @param userId ユーザーID
+     */
+    Remove(userId) {
         const lock = LockService.getDocumentLock();
         if (lock.tryLock(1000)) {
             const user = this.find(userId);
-            if (user == null) {
+            if (user === null) {
                 lock.releaseLock();
                 // 該当ユーザーなし
                 return;
             }
 
-            sheetAccessor.removeUser(user.rowId)
+            sheetAccessor.RemoveUser(userId)
             lock.releaseLock();
         }
     }
 
-    find(userId) {
-        const users = this.getAll();
+    /**
+     * ユーザー検索。
+     * @param searchUserId ユーザーID
+     * @returns 該当ユーザー。見つからなかったらnull
+     */
+    find(searchUserId) {
+        const result = sheetAccessor.GetUser(searchUserId);
+        if (result === undefined || result[0] === undefined) {
+            return null;
+        }
 
-        const index = users.findIndex((user) => {
-            return user.id === userId;
-        });
+        let userData = {
+            UserId: result[0][UserColumnNo.UserId - 1],
+            State: result[0][UserColumnNo.State - 1],
+            CurrentQuizNo: result[0][UserColumnNo.CurrentQuizNo - 1],
+        };
 
-        return index != -1 ? users[index] : null;
+        const quizCount = sheetAccessor.GetAllQuizzes().length;
+        let answerIndex = 0;
+        while (answerIndex < quizCount) {
+            answerIndex++;
+            userData[`Answer${answerIndex}`] = result[0][(UserColumnNo.CurrentQuizNo - 1) + answerIndex];
+        }
+        return userData;
     }
 }
 
 const user = new User();
-
-/**
- * フォロー時の処理
- */
-function follow(userId) {
-    return user.add(userId);
-}
-
-/**
- * フォロー解除時の処理
- */
-function unfollow(userId) {
-    return user.remove(userId);
-}

@@ -9,49 +9,94 @@ const Sheet = {
 
 class SheetAccessor {
 
-    addUser(userId, userName, currentTime, nickName) {
-        Sheet.User.appendRow([userId, userName, currentTime, nickName]);
+    /**
+     * ユーザーを取得する
+     * @param userId ユーザーID
+     * @returns 該当ユーザー行
+     */
+    GetUser(userId) {
+        const quizCount = this.GetAllQuizzes().length;
+        const result = Sheet.User.createTextFinder(userId).findAll();
+
+        let userData;
+        result.forEach(row => {
+            // 縦：ユーザーIDの行のみ、横は先頭からquizシートの問題数まで
+            userData = Sheet.User.getRange(row.getRow(), 1, 1, quizCount + UserColumnNo.CurrentQuizNo).getValues();
+        });
+        return userData;
     }
 
-    removeUser(userId) {
-        Sheet.User.deleteRow(userId);
+    /**
+     * 該当ユーザーを更新する
+     * @param userId ユーザーID
+     * @param columnNo カラム
+     * @param modifyValue 変更する値
+     */
+    updateUser(userId, columnNo, modifyValue) {
+        const result = Sheet.User.createTextFinder(userId).findAll();
+        result.forEach(row => {
+            Sheet.User.getRange(row.getRow(), columnNo).setValue(modifyValue);
+        });
     }
 
-    getAllUsers() {
+    AddUser(userId) {
+        const insertRow = [userId, State.Waiting, 0].concat(Array.from({ length: this.GetAllQuizzes().length }, () => ''));
+        Sheet.User.appendRow(insertRow);
+    }
+
+    RemoveUser(userId) {
+        const result = Sheet.User.createTextFinder(userId).findAll();
+        result.forEach(row => {
+            Sheet.User.deleteRow(row.getRow());
+        });
+    }
+
+    GetAllUsers() {
         return Sheet.User.getDataRange().getValues();
     }
 
-    getStatus() {
-        return Sheet.Quiz.getRange('Status').getValue();
+    GetStatus(userId) {
+        const userData = this.GetUser(userId);
+        return userData[0][UserColumnNo.State - 1];
     }
 
-    setStatus(status = "") {
-        Sheet.Quiz.getRange('Status').setValue(status);
+    SetStatus(userId, status = "") {
+        this.updateUser(userId, UserColumnNo.State, status);
     }
 
-    getQuizNo() {
-        return Sheet.Quiz.getRange('QuizNo').getValue();
+    GetQuizNo(userId) {
+        const userData = this.GetUser(userId);
+        return userData[0][UserColumnNo.CurrentQuizNo - 1];
     }
 
-    setQuizNo(quizNo = 0) {
-        Sheet.Quiz.getRange('QuizNo').setValue(quizNo);
+    SetQuizNo(userId, quizNo = 0) {
+        this.updateUser(userId, UserColumnNo.CurrentQuizNo, quizNo);
     }
 
-    countUpQuizNo() {
-        let currentQuizNo = this.getQuizNo();
-        Sheet.Quiz.getRange('QuizNo').setValue(++currentQuizNo);
+    CountUpQuizNo(userId) {
+        let currentQuizNo = this.GetQuizNo(userId);
+        this.updateUser(userId, 3, ++currentQuizNo);
     }
 
-    getAllQuizzes() {
+    GetAllQuizzes() {
         return Sheet.Quiz.getRange(QuizRange).getValues();
     }
 
-    setAnswer(question, answer) {
-        const result = Sheet.Quiz.createTextFinder(question).findAll();
-        result.forEach(row => {
-            var updcell = row.getA1Notation().replace("D", "H");
-            Sheet.Quiz.getRange(`${updcell}`).setValue(answer);
-        });
+    GetAnswer(userId, answerNo) {
+        const userData = this.GetUser(userId);
+        return userData[0][(UserColumnNo.CurrentQuizNo - 1) + answerNo];
+    }
+
+    ClearAnswer(userId) {
+        const questionCount = this.GetAllQuizzes().length;
+        for (let index = 1; index <= questionCount; index++) {
+            this.updateUser(userId, UserColumnNo.CurrentQuizNo + index, undefined);
+        }
+    }
+
+    SetAnswer(userId, answer) {
+        let currentQuizNo = this.GetQuizNo(userId);
+        this.updateUser(userId, UserColumnNo.CurrentQuizNo + currentQuizNo, answer);
     }
 }
 
