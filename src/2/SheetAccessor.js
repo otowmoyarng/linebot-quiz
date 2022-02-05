@@ -15,7 +15,7 @@ class SheetAccessor {
      * @returns 該当ユーザー行
      */
     GetUser(userId) {
-        const quizCount = this.GetAllQuizzes().length;
+        const quizCount = this.GetAllQuizzes().length - 1;
         const result = Sheet.User.createTextFinder(userId).findAll();
 
         let userData;
@@ -40,7 +40,7 @@ class SheetAccessor {
     }
 
     AddUser(userId) {
-        const insertRow = [userId, State.Waiting, 0].concat(Array.from({ length: this.GetAllQuizzes().length }, () => ''));
+        const insertRow = [userId, State.Waiting, 0].concat(Array.from({ length: this.GetAllQuizzes().length - 1 }, () => ''));
         Sheet.User.appendRow(insertRow);
     }
 
@@ -79,7 +79,7 @@ class SheetAccessor {
     }
 
     GetAllQuizzes() {
-        return Sheet.Quiz.getRange(QuizRange).getValues();
+        return Sheet.Quiz.getDataRange().getValues();
     }
 
     GetAnswer(userId, answerNo) {
@@ -88,7 +88,7 @@ class SheetAccessor {
     }
 
     ClearAnswer(userId) {
-        const questionCount = this.GetAllQuizzes().length;
+        const questionCount = this.GetAllQuizzes().length - 1;
         for (let index = 1; index <= questionCount; index++) {
             this.updateUser(userId, UserColumnNo.CurrentQuizNo + index, undefined);
         }

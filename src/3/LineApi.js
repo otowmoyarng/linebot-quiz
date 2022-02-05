@@ -22,6 +22,25 @@ const OptionBase = {
 class LineApi {
 
     /**
+     * 画像URLがGoogleDriveの共有リンクの場合は参照可能なURLに変換する
+     * 
+     * @param imgSrc 画像URL
+     * @returns 変換後のURL
+     */
+    convertURL(imgSrc) {
+        const GoogleDriveShareURLStart = "https://drive.google.com/file/d/";
+        const GoogleDriveShareURLEnd = "/view?usp=sharin";
+
+        if (!imgSrc.startsWith(GoogleDriveShareURLStart) || !imgSrc.endsWith(GoogleDriveShareURLEnd)) {
+            return imgSrc;
+        }
+
+        // ファイルIDを取得する
+        let convertedURL = imgSrc.replace(GoogleDriveShareURLEnd, '').replace(GoogleDriveShareURLStart, 'https://drive.google.com/uc?id=');
+        return convertedURL;
+    }
+
+    /**
      * テキストメッセージをリプライ送信する
      * 
      * @param replyToken リプライトークン
