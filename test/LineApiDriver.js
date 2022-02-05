@@ -23,7 +23,7 @@ function LineApiTest_PushTextMessage() {
 
 function LineApiTest_PushConfirmMessage() {
     console.log("確認テンプレートメッセージ：プッシュ送信開始");
-    const quizes = quiz.getAll();
+    const quizes = quiz.GetAll();
     quizes.forEach(quizItem => {
         if (quizItem.QuizType === QuestionType.Confirm) {
             console.log("Quiz:", quizItem);
@@ -35,7 +35,7 @@ function LineApiTest_PushConfirmMessage() {
 
 function LineApiTest_PushBottunMessage() {
     console.log("ボタンテンプレートメッセージ：プッシュ送信開始");
-    const quizes = quiz.getAll();
+    const quizes = quiz.GetAll();
     quizes.forEach(quizItem => {
         if (quizItem.QuizType === QuestionType.Button) {
             console.log("Quiz:", quizItem);

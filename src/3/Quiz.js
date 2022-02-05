@@ -56,7 +56,7 @@ class Quiz {
      * @param userId ユーザーID
      */
     score(userId) {
-        const quizList = quiz.getAll();
+        const quizList = this.GetAll();
         const questionCount = quizList.length;
         let correctCount = 0;
         for (let index = 0; index < questionCount; index++) {
@@ -74,7 +74,7 @@ class Quiz {
      * @param userId ユーザーID
      */
     Expose(replyToken, userId) {
-        const quizList = quiz.getAll();
+        const quizList = this.GetAll();
         const questionCount = quizList.length;
         let messages = [];
 
@@ -94,26 +94,28 @@ class Quiz {
         }
     }
 
-    getAll() {
+    GetAll() {
+        let quizList = [];
         const quizValues = sheetAccessor.GetAllQuizzes();
-        const quizzes = quizValues.map((row, index) => {
-            return {
-                QuizNo: row[QuizColumnNo.QuizNo],
-                QuizType: row[QuizColumnNo.QuizType],
-                ImgSrc: row[QuizColumnNo.ImgSrc],
-                Question: row[QuizColumnNo.Question],
-                Choices: row[QuizColumnNo.Choices],
-                Correct: row[QuizColumnNo.Correct],
-                // Judge: row[6],
-                // Answer: row[7],
-                rowId: index + 1
-            };
+        quizValues.forEach((row, index) => {
+            if (index > 0) {
+                let quizData = {
+                    QuizNo: row[QuizColumnNo.QuizNo],
+                    QuizType: row[QuizColumnNo.QuizType],
+                    ImgSrc: row[QuizColumnNo.ImgSrc],
+                    Question: row[QuizColumnNo.Question],
+                    Choices: row[QuizColumnNo.Choices],
+                    Correct: row[QuizColumnNo.Correct],
+                    rowId: index + 1
+                };
+                quizList.push(quizData);
+            }
         });
-        return quizzes;
+        return quizList;
     }
 
     find(quizNo) {
-        const quizzes = this.getAll();
+        const quizzes = this.GetAll();
 
         const index = quizzes.findIndex((quiz) => {
             return quiz.QuizNo === quizNo;

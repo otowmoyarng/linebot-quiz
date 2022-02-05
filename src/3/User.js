@@ -50,7 +50,7 @@ class User {
             CurrentQuizNo: result[0][UserColumnNo.CurrentQuizNo - 1],
         };
 
-        const quizCount = sheetAccessor.GetAllQuizzes().length;
+        const quizCount = quiz.GetAll().length;
         let answerIndex = 0;
         while (answerIndex < quizCount) {
             answerIndex++;
