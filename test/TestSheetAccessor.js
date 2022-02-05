@@ -1,4 +1,4 @@
-function TestSheet_Config() {
+function Config() {
     const keys = ['Token', 'URL'];
     keys.forEach(key => {
         const value = Sheet.Config.getRange(key).getValue();
@@ -6,15 +6,11 @@ function TestSheet_Config() {
     });
 }
 
-function TestGetAllUsers() {
+function GetAllUsers() {
     console.log("getAllUsers:", sheetAccessor.GetAllUsers());
 }
 
-function TestGetStatus() {
-    console.log("getStatus:", sheetAccessor.GetStatus(GetTestUserId()));
-}
-
-function TestSetStatus() {
+function Status() {
     const statusList = [State.Answering, State.Finish, State.Waiting];
     statusList.forEach(status => {
         sheetAccessor.SetStatus(GetTestUserId(), status);
@@ -22,7 +18,7 @@ function TestSetStatus() {
     });
 }
 
-function TestSetCountUpQuizNo() {
+function QuizNoAllTest() {
     const beforeQuizNo = sheetAccessor.GetQuizNo(GetTestUserId());
     sheetAccessor.SetQuizNo(GetTestUserId());
     let quizNo = sheetAccessor.GetQuizNo(GetTestUserId());
@@ -33,4 +29,10 @@ function TestSetCountUpQuizNo() {
         console.log(`QuizNo:${quizNo}`);
     }
     sheetAccessor.SetQuizNo(GetTestUserId(), beforeQuizNo);
+}
+
+function ClearAnswer() {
+    console.log("before:", sheetAccessor.GetUser(GetTestUserId()));
+    sheetAccessor.ClearAnswer(GetTestUserId());
+    console.log("after:", sheetAccessor.GetUser(GetTestUserId()));
 }

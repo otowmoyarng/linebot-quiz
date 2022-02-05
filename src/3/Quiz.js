@@ -10,6 +10,7 @@ class Quiz {
         sheetAccessor.SetStatus(userId, State.Answering);
         // 問題数と回答を初期化する
         sheetAccessor.SetQuizNo(userId);
+        sheetAccessor.ClearAnswer(userId);
         return this.Question(replyToken, userId);
     }
 
@@ -73,18 +74,6 @@ class Quiz {
      * @param userId ユーザーID
      */
     Expose(replyToken, userId) {
-        // const quizes = quiz.getAll();
-        // let messages = [];
-        // quizes.forEach(quizItem => {
-        //     const message = `Q${quizItem.QuizNo}  正解：${quizItem.Correct}、あなたの回答：${quizItem.Answer}`;
-        //     // 応答メッセージは最大5件
-        //     if (messages.length === 5) {
-        //         LineApiDriver.ReplyTextMessage(replyToken, messages);
-        //         messages = [];
-        //     }
-        //     messages.push(message);
-        // });
-
         const quizList = quiz.getAll();
         const questionCount = quizList.length;
         let messages = [];

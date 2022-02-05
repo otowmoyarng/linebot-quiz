@@ -87,6 +87,13 @@ class SheetAccessor {
         return userData[0][(UserColumnNo.CurrentQuizNo - 1) + answerNo];
     }
 
+    ClearAnswer(userId) {
+        const questionCount = this.GetAllQuizzes().length;
+        for (let index = 1; index <= questionCount; index++) {
+            this.updateUser(userId, UserColumnNo.CurrentQuizNo + index, undefined);
+        }
+    }
+
     SetAnswer(userId, answer) {
         let currentQuizNo = this.GetQuizNo(userId);
         this.updateUser(userId, UserColumnNo.CurrentQuizNo + currentQuizNo, answer);
