@@ -1,17 +1,17 @@
-function TestUsers_add() {
+function Add() {
     user.Add(GetTestUserId());
-    console.log("getAllUsers:", sheetAccessor.GetAllUsers());
+    console.log("not exists:", sheetAccessor.GetAllUsers());
     user.Add(GetTestUserId());
-    console.log("getAllUsers:", sheetAccessor.GetAllUsers());
+    console.log("exists:", sheetAccessor.GetAllUsers());
 }
 
-function TestUsers_remove() {
+function Remove() {
     user.Add(GetTestUserId());
     user.Remove(GetTestUserId());
-    console.log("getAllUsers:", sheetAccessor.GetAllUsers());
+    console.log("result:", sheetAccessor.GetAllUsers());
 }
 
-function TestUsers_find() {
+function find() {
     console.log("hit:", user.find(GetTestUserId()));
     console.log("not hit:", user.find("hoge"));
 }

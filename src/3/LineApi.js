@@ -20,15 +20,6 @@ const OptionBase = {
 };
 
 class LineApi {
-    getUserDisplayName(userId) {
-        const url = LineAPI_EntryPoint.Profile + userId;
-        const userProfile = UrlFetchApp.fetch(url, {
-            headers: {
-                Authorization: 'Bearer ' + ChannelAccessToken,
-            },
-        });
-        return JSON.parse(userProfile).displayName;
-    }
 
     /**
      * テキストメッセージをリプライ送信する
