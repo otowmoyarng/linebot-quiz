@@ -33,7 +33,7 @@ class Quiz {
         } else {
             switch (quizItem.QuizType) {
                 case QuestionType.Button:
-                    LineApiDriver.ReplyButtonMessage(replyToken, `Q${quizItem.QuizNo}`, quizItem.ImgSrc, quizItem.Question, quizItem.Choices);
+                    return LineApiDriver.ReplyButtonMessage(replyToken, `Q${quizItem.QuizNo}`, quizItem.ImgSrc, quizItem.Question, quizItem.Choices);
                 case QuestionType.Confirm:
                     return LineApiDriver.ReplyConfirmMessage(replyToken, quizItem.Question, quizItem.Choices);
                 default:
