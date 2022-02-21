@@ -1,4 +1,5 @@
 # linebot-quiz
+
 LINEDC企画用として作成したLINEBOT
 
 # 環境構築
@@ -47,6 +48,12 @@ src階層内のソースはデプロイ後に入れ替えが必要となる。
 
 ---
 
+```bash
+clasp deploy --deploymentId {deployId} --description "{description}"
+```
+
+GASプロジェクトをデプロイする。外部から使用可能となる。
+
 ## MessagingAPIについて
 
 [公式ドキュメント](https://developers.line.biz/ja/docs/messaging-api/)はこちら
@@ -65,6 +72,7 @@ src階層内のソースはデプロイ後に入れ替えが必要となる。
     ]
 }
 ```
+
 </details>
 
 <details>
@@ -81,6 +89,7 @@ src階層内のソースはデプロイ後に入れ替えが必要となる。
     ]
 }
 ```
+
 </details>
 
 <details>
@@ -102,6 +111,7 @@ src階層内のソースはデプロイ後に入れ替えが必要となる。
     }
 }
 ```
+
 </details>
 
 <details>
@@ -118,6 +128,7 @@ src階層内のソースはデプロイ後に入れ替えが必要となる。
     }
 }
 ```
+
 </details>
 
 <details>
@@ -130,4 +141,5 @@ src階層内のソースはデプロイ後に入れ替えが必要となる。
     "text": 'アクションの実行時に送信されるテキスト',
 }
 ```
+
 </details>
